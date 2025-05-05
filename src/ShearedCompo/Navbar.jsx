@@ -46,7 +46,7 @@ const Navbar = () => {
               Dashboard
             </Link>
             <span className="text-sm bg-yellow-500 text-black px-2 py-1 rounded">
-              Coins: {user.coin}
+              Coins: {user.coins}
             </span>
             <button
               onClick={handleLogout}

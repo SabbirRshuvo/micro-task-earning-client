@@ -166,7 +166,7 @@ const Dashboard = () => {
         {/* Topbar */}
         <header className="flex justify-between items-center px-4 py-3 border-b shadow-sm">
           <div className="flex flex-col items-end gap-1 text-right">
-            <p className="text-sm font-semibold">{user?.coin ?? 0} coins</p>
+            <p className="text-sm font-semibold">{user?.coins ?? 0} coins</p>
             <p className="text-sm capitalize">{user?.role ?? "User"}</p>
             <p className="text-sm text-gray-600">{user?.name}</p>
           </div>

@@ -9,19 +9,19 @@ const Banner = () => {
       title: "Earn Money Online",
       subtitle: "Complete Simple Tasks, Earn Real Rewards",
       image:
-        "https://media.istockphoto.com/id/814423752/photo/eye-of-model-with-colorful-art-make-up-close-up.jpg?s=612x612&w=0&k=20&c=l15OdMWjgCKycMMShP8UK94ELVlEGvt7GmB_esHWPYE=",
+        "https://i.ibb.co.com/SX5tZMJW/328391180-f57b10ed-08f4-4064-a94f-5ba2d10792d8.jpg",
     },
     {
       id: 2,
       title: "Post Your Tasks Easily",
       subtitle: "As a Buyer, Hire Global Workers Instantly",
-      image: "https://source.unsplash.com/1600x700/?work,remote",
+      image: "https://i.ibb.co.com/sv9TDQjD/2151179435.jpg",
     },
     {
       id: 3,
       title: "Join as Developer",
       subtitle: "Build and Deploy Micro Tasking Systems with Us",
-      image: "https://source.unsplash.com/1600x700/?coding,developer",
+      image: "https://i.ibb.co.com/sv8XKvZw/2151043242.jpg",
     },
   ];
   return (

@@ -4,6 +4,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Register = () => {
   const { register: createUser, updateUserProfile } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     const { name, email, password, photoURL, role } = data;
@@ -29,16 +31,17 @@ const Register = () => {
     try {
       const userCredential = await createUser(email, password);
       await updateUserProfile(name, photoURL);
-      const coin = role === "worker" ? 10 : 50;
+      const coins = role === "worker" ? 10 : 50;
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
         name,
         email,
         photoURL,
         role,
-        coin,
+        coins,
       });
       Swal.fire("Success", "User registered successfully!", "success");
+      navigate("/");
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }

@@ -68,7 +68,7 @@ const routes = createBrowserRouter([
         element: <BuyerHome />,
       },
       {
-        path: "add-new-taks",
+        path: "add-new-task",
         element: <AddNewTaks />,
       },
       {
