@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
@@ -18,35 +19,72 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const result = await signIn(data.email, data.password);
+      const user = result.user;
 
-    signIn(data.email, data.password)
-      .then((result) => {
-        const userData = result.user;
-        Swal.fire({
-          title: "Successfully login!!",
-          icon: "success",
-          draggable: true,
-        });
-        navigate(from, { replace: true });
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
+      // ✅ Call syncUserWithDatabase only for JWT token, not DB insert
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        { email: user.email },
+        { withCredentials: true }
+      );
+
+      Swal.fire({
+        title: "Successfully logged in!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
       });
+
+      navigate(from, { replace: true });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message || "Login failed!",
+      });
+    }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+      // Check if user exists in DB
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/${user.email}`
+      );
+
+      if (!res.data) {
+        // If not exists, insert user WITHOUT role
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/users`,
+          {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          },
+          { withCredentials: true }
+        );
+      }
+
+      // Always take JWT
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: user.email,
+        },
+        { withCredentials: true }
+      );
+
       navigate(from, { replace: true });
     } catch (error) {
-      console.log(error);
+      console.error("Google login error:", error);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-yellow-100 via-purple-100 to-blue-100 p-4">
       <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl">
@@ -99,19 +137,19 @@ const Login = () => {
           >
             Login
           </button>
-          <div className="mt-4">
-            <p className="text-center text-gray-500 mb-2">Or sign in with</p>
-            <button
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition"
-            >
-              <FcGoogle className="text-xl" />
-              <span className="text-gray-700 font-medium cursor-pointer">
-                Continue with Google
-              </span>
-            </button>
-          </div>
         </form>
+        <div className="mt-4">
+          <p className="text-center text-gray-500 mb-2">Or sign in with</p>
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition"
+          >
+            <FcGoogle className="text-xl" />
+            <span className="text-gray-700 font-medium cursor-pointer">
+              Continue with Google
+            </span>
+          </button>
+        </div>
         <div className="flex  flex-col text-center">
           <p className="text-center mt-4">
             Create a new Account!

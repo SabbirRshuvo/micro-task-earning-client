@@ -35,11 +35,9 @@ const AuthProvider = ({ children }) => {
     return res.user;
   };
 
-  const signIn = async (email, password) => {
+  const signIn = (email, password) => {
     setLoading(true);
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    await syncUserWithDatabase(res.user);
-    return res;
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signInWithGoogle = () => {
