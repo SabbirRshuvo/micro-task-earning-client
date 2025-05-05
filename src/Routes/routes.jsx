@@ -72,7 +72,7 @@ const routes = createBrowserRouter([
         element: <AddNewTaks />,
       },
       {
-        path: "my-taks",
+        path: "my-task",
         element: <MyTasks />,
       },
       {
