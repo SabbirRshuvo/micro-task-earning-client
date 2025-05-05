@@ -6,7 +6,6 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
   const { user, logout, loading } = useContext(AuthContext);
-  const availableCoin = 240;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,7 +13,7 @@ const Navbar = () => {
     console.log("logged out");
     navigate("/");
   };
-  console.log(user?.photoURL);
+  console.log(user);
   return (
     <nav className="bg-gray-900 text-white px-4 py-3 shadow-md flex justify-between items-center">
       {/* Logo / Website Name */}
@@ -47,7 +46,7 @@ const Navbar = () => {
               Dashboard
             </Link>
             <span className="text-sm bg-yellow-500 text-black px-2 py-1 rounded">
-              Coins: {availableCoin}
+              Coins: {user.coin}
             </span>
             <button
               onClick={handleLogout}
@@ -55,23 +54,28 @@ const Navbar = () => {
             >
               <FiLogOut /> Logout
             </button>
-            {loading ? (
-              <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
-            ) : user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                className="w-10 h-10 object-cover rounded-full"
-                alt="user"
-              />
-            ) : (
-              <FaUserCircle className="text-2xl" />
-            )}
+            <Link
+              to="/allusers"
+              className="hover:opacity-80 transition duration-200"
+            >
+              {loading ? (
+                <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+              ) : user?.photoURL ? (
+                <img
+                  src={user.photoURL}
+                  className="w-10 h-10 object-cover rounded-full"
+                  alt="user"
+                />
+              ) : (
+                <FaUserCircle className="text-3xl text-gray-600" />
+              )}
+            </Link>
 
             <a
-              href="https://github.com/your-client-repo"
+              href="https://github.com/SabbirRshuvo/micro-task-earning-client"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700 text-sm"
+              className="bg-green-600 px-3 py-1 rounded hover:bg-green-700 text-sm"
             >
               Join as Developer
             </a>

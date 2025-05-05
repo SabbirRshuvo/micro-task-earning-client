@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { FaGoogle } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router";
 
 const Login = () => {
   const { login, googleLogin } = useContext(AuthContext);
@@ -12,12 +13,16 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
       await login(email, password);
       Swal.fire("Success", "Logged in successfully!", "success");
+      navigate(from, { replace: true });
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
@@ -33,6 +38,7 @@ const Login = () => {
         photoURL,
       });
       Swal.fire("Success", "Logged in with Google!", "success");
+      navigate(from, { replace: true });
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }

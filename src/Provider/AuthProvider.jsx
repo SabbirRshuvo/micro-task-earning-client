@@ -50,17 +50,26 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        setUser({
-          name: currentUser.displayName,
-          email: currentUser.email,
-          photoURL: currentUser.photoURL,
-        });
+        try {
+          const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email: currentUser.email }
+          );
+          localStorage.setItem("access-token", data.token);
 
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_API_URL}/jwt`,
-          { email: currentUser.email }
-        );
-        localStorage.setItem("access-token", data.token);
+          const res = await axios.get(
+            `${import.meta.env.VITE_API_URL}/profile`,
+            {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+            }
+          );
+
+          setUser(res.data);
+        } catch (error) {
+          console.error("Error fetching user from DB:", error);
+        }
       } else {
         setUser(null);
         localStorage.removeItem("access-token");
