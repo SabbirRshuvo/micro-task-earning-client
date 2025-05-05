@@ -19,14 +19,27 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const createUser = (email, password) => {
+  const createUser = async (email, password, name, photoURL, role) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(res.user, {
+      displayName: name,
+      photoURL: photoURL,
+    });
+    await syncUserWithDatabase({
+      displayName: name,
+      email: email,
+      photoURL: photoURL,
+      role: role,
+    });
+    return res.user;
   };
 
-  const signIn = (email, password) => {
+  const signIn = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    await syncUserWithDatabase(res.user);
+    return res;
   };
 
   const signInWithGoogle = () => {
@@ -36,34 +49,22 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true);
-    try {
-      await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-        withCredentials: true,
-      });
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateUserProfile = (name, photo) => {
-    return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL: photo,
+    await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+      withCredentials: true,
     });
+    await signOut(auth);
   };
 
   const syncUserWithDatabase = async (user) => {
     if (!user?.email || !user?.displayName) return;
     try {
-      // Save user info to DB
       await axios.post(
         `${import.meta.env.VITE_API_URL}/users`,
         {
           name: user.displayName,
           email: user.email,
+          photoURL: user.photoURL,
+          role: user.role || "buyer", // default role if missing
         },
         { withCredentials: true }
       );
@@ -73,23 +74,16 @@ const AuthProvider = ({ children }) => {
         { email: user.email },
         { withCredentials: true }
       );
-      console.log(user);
     } catch (error) {
       console.error("Error syncing user with DB:", error);
     }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-      if (currentUser) {
-        await syncUserWithDatabase(currentUser);
-      }
-      console.log(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser || null);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -100,7 +94,6 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     signIn,
     logOut,
-    updateUserProfile,
     syncUserWithDatabase,
   };
   return (

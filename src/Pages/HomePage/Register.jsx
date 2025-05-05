@@ -3,87 +3,36 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
-import { FcGoogle } from "react-icons/fc";
 const Register = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const {
-    createUser,
-    updateUserProfile,
-    signInWithGoogle,
-    loading,
-    syncUserWithDatabase,
-  } = useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [submitted] = useState(false);
 
   const onSubmit = async (data) => {
+    const { name, email, password, photoURL, role } = data;
+
     try {
-      // Create Firebase user
-      const result = await createUser(data.email, data.password);
-      console.log(result.user);
-
-      // Update user profile with name and photo
-      await updateUserProfile(data.name, data.photoURL);
-
-      // Create user in database
-      await syncUserWithDatabase({
-        displayName: data.name,
-        email: data.email,
-        role: data.role,
-      });
-
+      await createUser(email, password, name, photoURL, role);
       Swal.fire({
-        position: "center",
+        title: "Drag me!",
         icon: "success",
-        title: "Registration successful!",
-        showConfirmButton: false,
-        timer: 1500,
+        draggable: true,
       });
-
+      reset();
       navigate("/");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       Swal.fire({
-        position: "center",
+        title: "Drag me!",
         icon: "error",
-        title: error.message,
-        showConfirmButton: true,
-      });
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithGoogle();
-
-      // Sync Google user with database
-      await syncUserWithDatabase({
-        name: result.user.displayName,
-        email: result.user.email,
-        photoURL: result.user.photoURL,
-      });
-
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Google sign in successful!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: error.message,
-        showConfirmButton: true,
+        draggable: true,
       });
     }
   };
@@ -192,19 +141,6 @@ const Register = () => {
           >
             Register
           </button>
-          <div className="mt-6">
-            <p className="text-center text-gray-500 mb-2">Or sign in with</p>
-            <button
-              onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition"
-              disabled={loading}
-            >
-              <FcGoogle className="text-xl" />
-              <span className="text-gray-700 font-medium cursor-pointer">
-                Continue with Google
-              </span>
-            </button>
-          </div>
         </form>
         <div className="flex  flex-col text-center">
           <p className="text-center mt-4">
