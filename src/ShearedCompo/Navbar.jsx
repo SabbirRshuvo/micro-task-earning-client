@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logout, loading } = useContext(AuthContext);
   const availableCoin = 240;
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logOut();
+    logout();
     console.log("logged out");
     navigate("/");
   };
@@ -55,17 +55,17 @@ const Navbar = () => {
             >
               <FiLogOut /> Logout
             </button>
-            <Link to="/profile" className="text-xl hover:text-gray-300">
-              {user?.photoURL ? (
-                <img
-                  src={user?.photoURL}
-                  className="w-10 h-10 object-cover rounded-full"
-                  alt=""
-                />
-              ) : (
-                <FaUserCircle />
-              )}
-            </Link>
+            {loading ? (
+              <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+            ) : user?.photoURL ? (
+              <img
+                src={user.photoURL}
+                className="w-10 h-10 object-cover rounded-full"
+                alt="user"
+              />
+            ) : (
+              <FaUserCircle className="text-2xl" />
+            )}
 
             <a
               href="https://github.com/your-client-repo"
