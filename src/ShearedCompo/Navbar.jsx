@@ -13,7 +13,7 @@ const Navbar = () => {
     console.log("logged out");
     navigate("/");
   };
-  console.log(user);
+  console.log(user?.photoURL);
   return (
     <nav className="bg-gray-900 text-white px-4 py-3 shadow-md flex justify-between items-center">
       {/* Logo / Website Name */}
@@ -31,14 +31,14 @@ const Navbar = () => {
             <Link to="/register" className="hover:text-gray-300">
               Register
             </Link>
-            <a
-              href="https://github.com/your-client-repo"
+            <Link
+              to="https://github.com/your-client-repo"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700"
             >
               Join as Developer
-            </a>
+            </Link>
           </>
         ) : (
           <>

@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import auth from "../firebase/firebase.config";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -19,33 +20,6 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const register = async (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  const login = async (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const logout = () => {
-    setLoading(true);
-    return signOut(auth);
-  };
-
-  const googleLogin = () => {
-    setLoading(true);
-    return signInWithPopup(auth, googleProvider);
-  };
-
-  const updateUserProfile = (name, photoURL) => {
-    return updateProfile(auth.currentUser, {
-      displayName: name,
-      photoURL,
-    });
-  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -55,6 +29,7 @@ const AuthProvider = ({ children }) => {
             `${import.meta.env.VITE_API_URL}/jwt`,
             { email: currentUser.email }
           );
+
           localStorage.setItem("access-token", data.token);
 
           const res = await axios.get(
@@ -65,7 +40,6 @@ const AuthProvider = ({ children }) => {
               },
             }
           );
-
           setUser(res.data);
         } catch (error) {
           console.error("Error fetching user from DB:", error);
@@ -80,9 +54,40 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  const register = async (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const login = async (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("access-token");
+    setUser(null);
+    Swal.fire("Success", "logged out successfully");
+  };
+
+  const googleLogin = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  const updateUserProfile = (name, photoURL) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL,
+    });
+  };
+
   const authInfo = {
     user,
+    setUser,
     loading,
+    setLoading,
     register,
     login,
     logout,

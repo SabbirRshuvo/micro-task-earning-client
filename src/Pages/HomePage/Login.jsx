@@ -7,7 +7,8 @@ import { FaGoogle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router";
 
 const Login = () => {
-  const { login, googleLogin } = useContext(AuthContext);
+  const { login, googleLogin, updateUserProfile, setUser, setLoading } =
+    useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -29,18 +30,41 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
+    setLoading(true);
     try {
       const result = await googleLogin();
-      const { displayName, email, photoURL } = result.user;
+      const user = result.user;
+      console.log(user);
+      if (!user.displayName || !user.photoURL) {
+        await updateUserProfile(
+          user.displayName || "user",
+          user.photoURL || "https://i.ibb.co/2nFq3nQ/default-avatar.png"
+        );
+      }
+
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
-        name: displayName,
-        email,
-        photoURL,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "worker",
+        coins: 10,
       });
+
+      await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+        email: user.email,
+      });
+      setUser({
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      });
+
       Swal.fire("Success", "Logged in with Google!", "success");
       navigate(from, { replace: true });
     } catch (error) {
       Swal.fire("Error", error.message, "error");
+    } finally {
+      setLoading(false);
     }
   };
 

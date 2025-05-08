@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -7,30 +8,30 @@ const Footer = () => {
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
         <div className="text-2xl font-bold mb-4 md:mb-0">MicroTasker</div>
         <div className="flex space-x-4">
-          <a
-            href="https://www.linkedin.com/in/your-linkedin"
+          <Link
+            to="https://www.linkedin.com/feed/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-blue-400 text-xl transition-colors duration-200"
           >
             <FaLinkedinIn />
-          </a>
-          <a
-            href="https://www.facebook.com/your-facebook"
+          </Link>
+          <Link
+            to="https://www.facebook.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-blue-600 text-xl transition-colors duration-200"
           >
             <FaFacebookF />
-          </a>
-          <a
-            href="https://github.com/your-github"
+          </Link>
+          <Link
+            to="https://github.com/SabbirRshuvo?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-gray-400 text-xl transition-colors duration-200"
           >
             <FaGithub />
-          </a>
+          </Link>
         </div>
       </div>
 
