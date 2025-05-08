@@ -101,7 +101,17 @@ const Dashboard = () => {
                   : "block hover:underline"
               }
             >
-              Purchae Coin
+              Purchase Coin
+            </NavLink>
+            <NavLink
+              to="/dashboard/payment-history"
+              className={({ isActive }) =>
+                isActive
+                  ? "block text-green-600 font-semibold"
+                  : "block hover:underline"
+              }
+            >
+              Payment History
             </NavLink>
           </nav>
         )}

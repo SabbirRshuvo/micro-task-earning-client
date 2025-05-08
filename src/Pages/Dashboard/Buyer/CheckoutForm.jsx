@@ -73,7 +73,7 @@ const CheckoutForm = ({ coins, price }) => {
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="btn btn-primary w-full"
+        className="btn btn-secondary w-full"
       >
         {processing ? "Processing..." : `Pay $${price}`}
       </button>
