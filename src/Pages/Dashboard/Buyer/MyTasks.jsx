@@ -21,7 +21,7 @@ const MyTasks = () => {
     },
   });
 
-  // ✅ Delete Task
+  // Delete Task
   const deleteTaskMutation = useMutation({
     mutationFn: async (task) => {
       const res = await axios.delete(
@@ -29,7 +29,7 @@ const MyTasks = () => {
         {
           data: {
             userEmail: user.email,
-            isCompleted: task?.is_completed,
+            status: task?.status,
             refundAmount: task.required_workers * task.payable_amount,
           },
         }
@@ -39,7 +39,7 @@ const MyTasks = () => {
     onSuccess: () => {
       Swal.fire("Deleted!", "Task deleted and coins adjusted.", "success");
       queryClient.invalidateQueries(["myTasks", user?.email]);
-      queryClient.invalidateQueries(["userInfo"]); // update user coin info if you have a hook
+      queryClient.invalidateQueries(["userInfo"]);
     },
   });
 
@@ -48,12 +48,14 @@ const MyTasks = () => {
     mutationFn: async (task) => {
       const res = await axios.patch(
         `${import.meta.env.VITE_API_URL}/tasks/${task._id}`,
+
         {
-          title: task.title,
+          task_title: task.task_title,
           task_detail: task.task_detail,
           submission_info: task.submission_info,
         }
       );
+
       return res.data;
     },
     onSuccess: () => {
@@ -82,7 +84,7 @@ const MyTasks = () => {
     const form = e.target;
     const updatedTask = {
       _id: editingTask._id,
-      title: form.title.value,
+      task_title: form.task_title.value,
       task_detail: form.task_detail.value,
       submission_info: form.submission_info.value,
     };
@@ -110,14 +112,14 @@ const MyTasks = () => {
         <tbody>
           {tasks.map((task) => (
             <tr key={task._id}>
-              <td>{task.title}</td>
+              <td>{task.task_title}</td>
               <td>{task.task_detail}</td>
               <td>{task.required_workers}</td>
               <td>{task.payable_amount}</td>
               <td>{task.completion_date}</td>
               <td>{task.submission_info}</td>
-              <td>{task.is_completed ? "✅" : ""}</td>
-              <td className="space-x-2">
+              <td>{task.status}</td>
+              <td className="space-x-2 space-y-2">
                 <button
                   onClick={() => setEditingTask(task)}
                   className="btn btn-sm btn-warning"
@@ -145,19 +147,19 @@ const MyTasks = () => {
           >
             <h3 className="text-xl font-bold mb-2">Update Task</h3>
             <input
-              defaultValue={editingTask.title}
-              name="title"
-              className="input input-bordered w-full"
+              defaultValue={editingTask.task_title}
+              name="task_title"
+              className="input input-bordered w-full focus:outline-none"
             />
             <textarea
               defaultValue={editingTask.task_detail}
               name="task_detail"
-              className="textarea textarea-bordered w-full"
+              className="textarea textarea-bordered w-full focus:outline-none"
             />
             <input
               defaultValue={editingTask.submission_info}
               name="submission_info"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full focus:outline-none"
             />
             <div className="flex justify-end gap-2">
               <button

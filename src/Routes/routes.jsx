@@ -17,6 +17,7 @@ import PurchaseCoin from "../Pages/Dashboard/Buyer/PurchaseCoin";
 import AdminHome from "../Pages/Dashboard/Admin/AdminHome";
 import MangeUser from "../Pages/Dashboard/Admin/MangeUser";
 import ManageTaks from "../Pages/Dashboard/Admin/ManageTaks";
+import PurchasePayment from "../Pages/Dashboard/Buyer/PurchasePayment";
 
 const routes = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const routes = createBrowserRouter([
       {
         path: "manege-task",
         element: <ManageTaks />,
+      },
+      {
+        path: "parchase-payment",
+        element: <PurchasePayment />,
       },
     ],
   },

@@ -52,14 +52,14 @@ const Register = () => {
       <h2 className="text-2xl font-bold mb-4">Register</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           {...register("name", { required: true })}
           placeholder="Name"
         />
         {errors.name && <span className="text-red-500">Name is required</span>}
 
         <input
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           {...register("email", { required: true })}
           placeholder="Email"
         />
@@ -68,7 +68,7 @@ const Register = () => {
         )}
 
         <input
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           {...register("photoURL", { required: true })}
           placeholder="Photo URL"
         />
@@ -78,7 +78,7 @@ const Register = () => {
 
         <input
           type="password"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           {...register("password", { required: true })}
           placeholder="Password"
         />
@@ -87,7 +87,7 @@ const Register = () => {
         )}
 
         <select
-          className="select select-bordered w-full"
+          className="select select-bordered w-full focus:outline-none"
           {...register("role", { required: true })}
         >
           <option value="">Select Role</option>

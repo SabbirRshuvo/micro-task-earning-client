@@ -81,7 +81,7 @@ const Login = () => {
               type="email"
               {...register("email", { required: true })}
               placeholder="Email Address"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full focus:outline-none"
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">Email is required</p>
@@ -93,7 +93,7 @@ const Login = () => {
               type="password"
               {...register("password", { required: true })}
               placeholder="Password"
-              className="input input-bordered w-full"
+              className="input input-bordered w-full focus:outline-none"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">Password is required</p>

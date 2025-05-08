@@ -5,6 +5,7 @@ import { Link, NavLink, Outlet } from "react-router";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
+
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
       {/* Sidebar */}

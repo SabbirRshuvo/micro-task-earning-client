@@ -1,64 +1,30 @@
-import { useState } from "react";
-import useAuth from "../../../Hooks/useAuth";
-import useUserInfo from "../../../Hooks/useUserInfo";
-import Swal from "sweetalert2";
-import axios from "axios";
+import React from "react";
+import { useNavigate } from "react-router";
 
+const coinOptions = [
+  { coins: 10, price: 1 },
+  { coins: 150, price: 10 },
+  { coins: 500, price: 20 },
+  { coins: 1000, price: 35 },
+];
 const PurchaseCoin = () => {
-  const { user } = useAuth();
-  const [coinAmount, setCoinAmount] = useState(0);
-  const { userInfo, refetch } = useUserInfo(user?.email);
-
-  const handlePurchase = async () => {
-    if (!coinAmount || coinAmount <= 0) {
-      return Swal.fire("Invalid Amount", "Enter a valid coin amount.", "error");
-    }
-
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/users/add-coins`,
-        {
-          email: user.email,
-          coins: parseInt(coinAmount),
-        }
-      );
-
-      if (res.data.modifiedCount > 0) {
-        Swal.fire("Success", `${coinAmount} Coins Added!`, "success");
-        refetch();
-        setCoinAmount(0);
-      }
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error", "Failed to add coins.", "error");
-    }
+  const navigate = useNavigate();
+  const handleSelect = (option) => {
+    navigate(`/dashboard/parchase-payment`, { state: option });
   };
-
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg p-6 rounded-lg mt-10">
-      <h2 className="text-2xl font-semibold text-center mb-4">
-        Purchase Coins
-      </h2>
-
-      <div className="text-center mb-6">
-        <p className="text-lg">
-          Current Coins:{" "}
-          <span className="font-bold">{userInfo?.coins || 0}</span>
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <input
-          type="number"
-          className="input input-bordered w-full"
-          placeholder="Enter Coin Amount"
-          value={coinAmount}
-          onChange={(e) => setCoinAmount(e.target.value)}
-        />
-        <button onClick={handlePurchase} className="btn btn-primary w-full">
-          Add Coins
-        </button>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 max-w-5xl mx-auto">
+      {coinOptions.map((opt) => (
+        <div
+          key={opt.coins}
+          className="border p-6 text-center cursor-pointer hover:shadow-xl transition"
+          onClick={() => handleSelect(opt)}
+        >
+          <h2 className="text-xl font-semibold">{opt.coins} coins</h2>
+          <p>=</p>
+          <p className="text-green-600 text-2xl font-bold">${opt.price}</p>
+        </div>
+      ))}
     </div>
   );
 };

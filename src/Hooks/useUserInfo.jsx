@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useAuth from "./useAuth";
 
-const useUserInfo = (email) => {
-  const {
-    data: userInfo = {},
-    isLoading,
-    refetch,
-  } = useQuery({
+const useUserInfo = () => {
+  const { user } = useAuth();
+  const email = user?.email;
+  const { data: userInfo = [], refetch } = useQuery({
     queryKey: ["userInfo", email],
     enabled: !!email,
     queryFn: async () => {
@@ -17,7 +16,7 @@ const useUserInfo = (email) => {
     },
   });
 
-  return { userInfo, isLoading, refetch };
+  return [userInfo, refetch];
 };
 
 export default useUserInfo;

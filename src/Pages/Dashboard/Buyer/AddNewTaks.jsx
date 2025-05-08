@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -11,7 +11,7 @@ const AddNewTaks = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { refetch } = useUserInfo();
+  const [userInfo, refetch] = useUserInfo();
 
   const onSubmit = async (data) => {
     const imageFile = data.task_image[0];
@@ -19,7 +19,6 @@ const AddNewTaks = () => {
     formData.append("image", imageFile);
 
     try {
-      // ✅ Upload image to imageBB
       const imageRes = await axios.post(
         `https://api.imgbb.com/1/upload?key=${
           import.meta.env.VITE_IMGBB_API_KEY
@@ -33,13 +32,11 @@ const AddNewTaks = () => {
         const payableAmount = parseInt(data.payable_amount);
         const totalPayable = requiredWorkers * payableAmount;
 
-        // ✅ Get user's current coin balance
         const userRes = await axios.get(
           `${import.meta.env.VITE_API_URL}/users/${user.email}`
         );
         const userCoins = userRes.data.coins;
 
-        // ✅ Check balance
         if (totalPayable > userCoins) {
           Swal.fire(
             "Not enough coins!",
@@ -49,7 +46,6 @@ const AddNewTaks = () => {
           return navigate("/dashboard/purchase-coin");
         }
 
-        // ✅ Create task object
         const task = {
           task_title: data.task_title,
           task_detail: data.task_detail,
@@ -64,14 +60,12 @@ const AddNewTaks = () => {
           createdAt: new Date(),
         };
 
-        // ✅ Save task to DB
         const taskRes = await axios.post(
           `${import.meta.env.VITE_API_URL}/tasks`,
           task
         );
 
         if (taskRes.data.insertedId) {
-          // ✅ Reduce buyer's coins
           await axios.patch(
             `${import.meta.env.VITE_API_URL}/users/reduce-coins`,
             {
@@ -80,8 +74,11 @@ const AddNewTaks = () => {
             }
           );
 
-          Swal.fire("Success!", "Task added successfully.", "success");
+          console.log("refething");
           refetch();
+
+          Swal.fire("Success!", "Task added successfully.", "success");
+
           reset();
         }
       }
@@ -96,46 +93,46 @@ const AddNewTaks = () => {
       <h2 className="text-2xl font-bold mb-6 text-center">Add New Task</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           placeholder="Task Title"
           {...register("task_title", { required: true })}
         />
         <textarea
-          className="textarea textarea-bordered w-full"
+          className="textarea textarea-bordered w-full focus:outline-none"
           placeholder="Task Detail"
           {...register("task_detail", { required: true })}
         />
         <div className="grid grid-cols-2 gap-4">
           <input
             type="number"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
             placeholder="Required Workers"
             {...register("required_workers", { required: true })}
           />
           <input
             type="number"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-none"
             placeholder="Payable Amount per Worker"
             {...register("payable_amount", { required: true })}
           />
         </div>
         <input
           type="date"
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           {...register("completion_date", { required: true })}
         />
         <input
-          className="input input-bordered w-full"
+          className="input input-bordered w-full focus:outline-none"
           placeholder="Submission Info (e.g., screenshot, link, etc.)"
           {...register("submission_info", { required: true })}
         />
         <input
           type="file"
-          className="file-input file-input-bordered w-full"
+          className="file-input file-input-bordered w-full  focus:outline-none"
           accept="image/*"
           {...register("task_image", { required: true })}
         />
-        <button className="btn btn-primary w-full mt-4" type="submit">
+        <button className="btn btn-secondary w-full mt-4" type="submit">
           Add Task
         </button>
       </form>
