@@ -5,13 +5,13 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthProvider";
-import useUserInfo from "../../../Hooks/useUserInfo";
+import useCoins from "../../../Hooks/useCoins";
 
 const AddNewTaks = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [userInfo, refetch] = useUserInfo();
+  const [coins, , refetch] = useCoins();
 
   const onSubmit = async (data) => {
     const imageFile = data.task_image[0];
