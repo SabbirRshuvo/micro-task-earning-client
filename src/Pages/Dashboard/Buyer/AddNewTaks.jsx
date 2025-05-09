@@ -6,12 +6,15 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import useCoins from "../../../Hooks/useCoins";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AddNewTaks = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [coins, , refetch] = useCoins();
+  const [coins, isLoading, refetch] = useCoins();
+
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
     const imageFile = data.task_image[0];
@@ -47,6 +50,7 @@ const AddNewTaks = () => {
         }
 
         const task = {
+          buyer_name: data.buyer_name,
           task_title: data.task_title,
           task_detail: data.task_detail,
           required_workers: requiredWorkers,
@@ -60,10 +64,7 @@ const AddNewTaks = () => {
           createdAt: new Date(),
         };
 
-        const taskRes = await axios.post(
-          `${import.meta.env.VITE_API_URL}/tasks`,
-          task
-        );
+        const taskRes = await axiosSecure.post(`/tasks`, task);
 
         if (taskRes.data.insertedId) {
           await axios.patch(
@@ -92,6 +93,11 @@ const AddNewTaks = () => {
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow rounded-xl">
       <h2 className="text-2xl font-bold mb-6 text-center">Add New Task</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <input
+          className="input input-bordered w-full focus:outline-none"
+          placeholder="Buyer Name"
+          {...register("buyer_name", { required: true })}
+        />
         <input
           className="input input-bordered w-full focus:outline-none"
           placeholder="Task Title"

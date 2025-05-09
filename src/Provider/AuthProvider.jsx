@@ -67,6 +67,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     await signOut(auth);
     localStorage.removeItem("access-token");
+    await axios.get(`${import.meta.env.VITE_API_URL}/logout`);
     setUser(null);
     Swal.fire("Success", "logged out successfully");
   };

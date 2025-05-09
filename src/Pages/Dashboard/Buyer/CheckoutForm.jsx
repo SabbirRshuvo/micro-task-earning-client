@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useCoins from "../../../Hooks/useCoins";
 const CheckoutForm = ({ coins, price }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -10,6 +11,8 @@ const CheckoutForm = ({ coins, price }) => {
   const [processing, setProcessing] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+
+  const [, , refetch] = useCoins();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +59,7 @@ const CheckoutForm = ({ coins, price }) => {
         // 3. Save payment info and update coins
         const res = await axiosSecure.post("/payments", paymentInfo);
         if (res.data.success) {
+          refetch();
           Swal.fire("Success", "Coins purchased successfully!", "success");
         }
       } else {

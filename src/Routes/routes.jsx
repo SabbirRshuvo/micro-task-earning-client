@@ -19,6 +19,7 @@ import MangeUser from "../Pages/Dashboard/Admin/MangeUser";
 import ManageTaks from "../Pages/Dashboard/Admin/ManageTaks";
 import PurchasePayment from "../Pages/Dashboard/Buyer/PurchasePayment";
 import PaymentHistory from "../Pages/Dashboard/Buyer/PaymentHistory";
+import TaskDetails from "../Pages/Dashboard/Worker/TaskDetails";
 
 const routes = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const routes = createBrowserRouter([
       {
         path: "payment-history",
         element: <PaymentHistory />,
+      },
+      {
+        path: "task-details/:id",
+        element: <TaskDetails />,
       },
     ],
   },
