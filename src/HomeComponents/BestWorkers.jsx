@@ -2,11 +2,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 import useAxiosSecure from "../Hooks/useAxiosSecure";
-import useTotalCoins from "../Hooks/useTotalCoins";
+import useAuth from "../Hooks/useAuth";
 
 const BestWorkers = () => {
   const axiosSecure = useAxiosSecure();
-  const { totalCoins, isLoading: totalCoinLoading } = useTotalCoins();
+  const { user } = useAuth();
   const { data: workers = [], isLoading } = useQuery({
     queryKey: ["top-workers"],
     queryFn: async () => {
@@ -16,10 +16,6 @@ const BestWorkers = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center py-10">Loading...</p>;
-  }
-
-  if (totalCoinLoading) {
     return <p className="text-center py-10">Loading...</p>;
   }
 
@@ -39,7 +35,11 @@ const BestWorkers = () => {
             />
             <h3 className="text-lg font-semibold">{worker?.name}</h3>
             <p className="text-sm text-gray-600">{worker?.email}</p>
-            <p className="mt-2 font-bold text-green-600">{totalCoins} coins</p>
+            {user.coins && (
+              <p className="mt-2 font-bold text-green-600">
+                {user.coins} coins
+              </p>
+            )}
           </div>
         ))}
       </div>

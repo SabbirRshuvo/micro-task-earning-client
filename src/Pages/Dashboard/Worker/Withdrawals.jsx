@@ -1,29 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import useTotalCoins from "../../../Hooks/useTotalCoins";
+import useSubmissions from "../../../Hooks/useSubmissions";
 
 const Withdrawals = () => {
   const { user } = useAuth();
   const [withdrawDollar, setWithdrawDollar] = useState(0);
 
-  const { totalCoins, isLoading } = useTotalCoins();
+  const { totalEarningCoins, refetch } = useSubmissions();
 
   // Load user data
-  const { data: userData = {} } = useQuery({
-    queryKey: ["user-coins", user?.email],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users?email=/${user.email}`
-      );
-      return res.data;
-    },
-  });
 
   const {
     register,
@@ -69,16 +58,14 @@ const Withdrawals = () => {
       );
       reset();
       setWithdrawDollar(0);
+      refetch();
     } catch (error) {
       console.error(error);
       Swal.fire("Error!", "Something went wrong!", "error");
     }
   };
 
-  const userCoins = userData?.coins || 0;
-  const canWithdraw = userCoins >= 200;
-
-  if (isLoading) return <p>Loading...</p>;
+  const canWithdraw = totalEarningCoins >= 200;
 
   return (
     <div className="max-w-lg mx-auto mt-10 bg-white rounded-lg shadow-md p-6">
@@ -86,12 +73,13 @@ const Withdrawals = () => {
 
       <div className="mb-6 text-center">
         <p className="font-semibold">
-          Your Current Coin: <span className="text-blue-600">{totalCoins}</span>
+          Your Current Coin:{" "}
+          <span className="text-blue-600">{totalEarningCoins}</span>
         </p>
         <p className="font-semibold">
           Equivalent Dollar:{" "}
           <span className="text-green-600">
-            ${(totalCoins / 20).toFixed(2)}
+            ${(totalEarningCoins / 20).toFixed(2)}
           </span>
         </p>
       </div>
@@ -105,7 +93,7 @@ const Withdrawals = () => {
               {...register("coin", {
                 required: true,
                 min: 200,
-                max: totalCoins,
+                max: totalEarningCoins,
               })}
               onChange={handleCoinChange}
               placeholder="Enter coin amount"
@@ -113,7 +101,7 @@ const Withdrawals = () => {
             />
             {errors.coin && (
               <p className="text-sm text-red-500">
-                Enter a valid coin amount (min 200, max {totalCoins})
+                Enter a valid coin amount (min 200, max {totalEarningCoins})
               </p>
             )}
           </div>
@@ -163,7 +151,7 @@ const Withdrawals = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition cursor-pointer"
           >
             Withdraw
           </button>

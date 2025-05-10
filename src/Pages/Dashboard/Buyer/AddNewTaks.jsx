@@ -12,8 +12,7 @@ const AddNewTaks = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [coins, isLoading, refetch] = useCoins();
-
+  const { userCoins, isLoading, refetch } = useCoins();
   const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {

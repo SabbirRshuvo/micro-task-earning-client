@@ -1,17 +1,7 @@
-import useCoins from "./useCoins";
-import useSubmissions from "./useSubmissions";
+import React from "react";
 
 const useTotalCoins = () => {
-  const { userCoins, isLoading: loadingCoins } = useCoins();
-
-  const { totalEarningCoins, isLoading: loadingEarningCoins } =
-    useSubmissions();
-
-  const totalCoins = userCoins + totalEarningCoins;
-
-  const isLoading = loadingCoins || loadingEarningCoins;
-
-  return { userCoins, totalEarningCoins, totalCoins, isLoading };
+  return <div>useTotalCoins</div>;
 };
 
 export default useTotalCoins;

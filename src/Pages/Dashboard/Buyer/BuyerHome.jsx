@@ -68,48 +68,56 @@ const BuyerHome = () => {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold mb-2">Task Submissions to Review</h3>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Worker</th>
-              <th>Task</th>
-              <th>Payable ($)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reviews.map((submission) => (
-              <tr key={submission._id}>
-                <td>{submission.worker_name}</td>
-                <td>{submission.task_title}</td>
-                <td>{submission.payable_amount}</td>
-                <td>
-                  <button
-                    onClick={() => setSelectedSubmission(submission)}
-                    className="btn btn-sm btn-info mr-2"
-                  >
-                    View
-                  </button>
-                  <button
-                    onClick={() => approveMutation.mutate(submission._id)}
-                    className="btn btn-sm btn-success mr-2"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => rejectMutation.mutate(submission._id)}
-                    className="btn btn-sm btn-error"
-                  >
-                    Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {reviews.length > 0 ? (
+        <>
+          <h3 className="text-lg font-semibold mb-2">
+            Task Submissions to Review
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th>Worker</th>
+                  <th>Task</th>
+                  <th>Payable ($)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reviews.map((submission) => (
+                  <tr key={submission._id}>
+                    <td>{submission.worker_name}</td>
+                    <td>{submission.task_title}</td>
+                    <td>{submission.payable_amount}</td>
+                    <td>
+                      <button
+                        onClick={() => setSelectedSubmission(submission)}
+                        className="btn btn-sm btn-info mr-2"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => approveMutation.mutate(submission._id)}
+                        className="btn btn-sm btn-success mr-2"
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => rejectMutation.mutate(submission._id)}
+                        className="btn btn-sm btn-error"
+                      >
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <p>no data avaliable</p>
+      )}
 
       {selectedSubmission && (
         <SubmissionModal

@@ -12,7 +12,7 @@ const CheckoutForm = ({ coins, price }) => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  const [, , refetch] = useCoins();
+  const { refetch } = useCoins();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
