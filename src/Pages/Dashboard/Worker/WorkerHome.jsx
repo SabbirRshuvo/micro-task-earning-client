@@ -1,23 +1,7 @@
-import React from "react";
-import useAuth from "../../../Hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useSubmissions from "../../../Hooks/useSubmissions";
 
 const WorkerHome = () => {
-  const { user } = useAuth();
-
-  const email = user?.email;
-
-  const { data: submissions = [], isLoading } = useQuery({
-    queryKey: ["submissions", email],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/submissions?workerEmail=${email}`
-      );
-      return res.data;
-    },
-    enabled: !!email,
-  });
+  const { submissions, isLoading, isError } = useSubmissions();
 
   const totalSubmission = submissions.length;
   const totalPending = submissions.filter(
@@ -30,6 +14,9 @@ const WorkerHome = () => {
   const approvedSubmissions = submissions.filter(
     (item) => item.status === "approved"
   );
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error fetching submissions.</p>;
 
   if (isLoading)
     return <div className="text-center text-red-400">Loading...</div>;

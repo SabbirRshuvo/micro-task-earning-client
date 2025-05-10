@@ -21,39 +21,6 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        try {
-          const { data } = await axios.post(
-            `${import.meta.env.VITE_API_URL}/jwt`,
-            { email: currentUser.email }
-          );
-
-          localStorage.setItem("access-token", data.token);
-
-          const res = await axios.get(
-            `${import.meta.env.VITE_API_URL}/profile`,
-            {
-              headers: {
-                Authorization: `Bearer ${data.token}`,
-              },
-            }
-          );
-          setUser(res.data);
-        } catch (error) {
-          console.error("Error fetching user from DB:", error);
-        }
-      } else {
-        setUser(null);
-        localStorage.removeItem("access-token");
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   const register = async (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
@@ -69,7 +36,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("access-token");
     await axios.get(`${import.meta.env.VITE_API_URL}/logout`);
     setUser(null);
-    Swal.fire("Success", "logged out successfully");
+    Swal.fire("Success", "Logged out successfully", "success");
   };
 
   const googleLogin = () => {
@@ -84,6 +51,46 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser && currentUser?.email) {
+        try {
+          const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email: currentUser.email }
+          );
+
+          localStorage.setItem("access-token", data.token);
+
+          const res = await axios.get(
+            `${import.meta.env.VITE_API_URL}/profile?email=${
+              currentUser.email
+            }`,
+            {
+              headers: {
+                Authorization: `Bearer ${data.token}`,
+              },
+            }
+          );
+
+          setUser(res.data);
+        } catch (error) {
+          console.error("Error fetching user from DB:", error);
+          setUser(null);
+          localStorage.removeItem("access-token");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setUser(null);
+        localStorage.removeItem("access-token");
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const authInfo = {
     user,
     setUser,
@@ -95,6 +102,7 @@ const AuthProvider = ({ children }) => {
     googleLogin,
     updateUserProfile,
   };
+
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

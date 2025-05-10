@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { useQuery } from "@tanstack/react-query";
 
 import useAxiosSecure from "../Hooks/useAxiosSecure";
+import useTotalCoins from "../Hooks/useTotalCoins";
 
 const BestWorkers = () => {
   const axiosSecure = useAxiosSecure();
+  const { totalCoins, isLoading: totalCoinLoading } = useTotalCoins();
   const { data: workers = [], isLoading } = useQuery({
     queryKey: ["top-workers"],
     queryFn: async () => {
@@ -15,7 +18,11 @@ const BestWorkers = () => {
   if (isLoading) {
     return <p className="text-center py-10">Loading...</p>;
   }
-  console.log(workers);
+
+  if (totalCoinLoading) {
+    return <p className="text-center py-10">Loading...</p>;
+  }
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4 text-center"> Best Workers</h2>
@@ -32,9 +39,7 @@ const BestWorkers = () => {
             />
             <h3 className="text-lg font-semibold">{worker?.name}</h3>
             <p className="text-sm text-gray-600">{worker?.email}</p>
-            <p className="mt-2 font-bold text-green-600">
-              {worker.coins} coins
-            </p>
+            <p className="mt-2 font-bold text-green-600">{totalCoins} coins</p>
           </div>
         ))}
       </div>

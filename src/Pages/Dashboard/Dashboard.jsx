@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
-import useCoins from "../../Hooks/useCoins";
+import useTotalCoins from "../../Hooks/useTotalCoins";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
-  const [coins, isLoading] = useCoins();
+  const { totalCoins, isLoading } = useTotalCoins();
+
+  if (isLoading) return <p>Loading... </p>;
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
@@ -168,10 +170,10 @@ const Dashboard = () => {
         {/* Topbar */}
         <header className="flex justify-between items-center px-4 py-3 border-b shadow-sm">
           <div className="flex flex-col items-end gap-1 text-right">
-            {isLoading ? (
-              "Loading"
+            {totalCoins ? (
+              <p className="text-sm font-semibold">{totalCoins ?? 0} coins</p>
             ) : (
-              <p className="text-sm font-semibold">{coins ?? 0} coins</p>
+              "Loading"
             )}
             <p className="text-sm capitalize">{user?.role ?? "User"}</p>
             <p className="text-sm text-gray-600">{user?.name}</p>

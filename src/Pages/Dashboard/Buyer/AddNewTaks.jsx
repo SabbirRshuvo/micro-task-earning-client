@@ -35,9 +35,7 @@ const AddNewTaks = () => {
         const payableAmount = parseInt(data.payable_amount);
         const totalPayable = requiredWorkers * payableAmount;
 
-        const userRes = await axios.get(
-          `${import.meta.env.VITE_API_URL}/users/${user.email}`
-        );
+        const userRes = await axiosSecure.get(`/users?email=/${user.email}`);
         const userCoins = userRes.data.coins;
 
         if (totalPayable > userCoins) {

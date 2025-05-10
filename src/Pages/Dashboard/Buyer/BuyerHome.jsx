@@ -3,6 +3,7 @@ import useAuth from "../../../Hooks/useAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import SubmissionModal from "./SubmissionModal";
 
 const BuyerHome = () => {
   const { user } = useAuth();
@@ -48,6 +49,8 @@ const BuyerHome = () => {
       queryClient.invalidateQueries(["taskSubmissions"]);
     },
   });
+
+  console.log(stats);
 
   return (
     <div className="p-4">

@@ -16,10 +16,6 @@ const SubmissionModal = ({ submission, onClose }) => {
         <h2 className="text-xl font-bold mb-4">Submission Detail</h2>
 
         <p>
-          <span className="font-semibold">Worker:</span>{" "}
-          {submission.worker_name}
-        </p>
-        <p>
           <span className="font-semibold">Task:</span> {submission.task_title}
         </p>
         <p>

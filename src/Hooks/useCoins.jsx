@@ -4,22 +4,23 @@ import useAxiosSecure from "./useAxiosSecure";
 
 const useCoins = () => {
   const { user, loading } = useAuth();
+  const email = user?.email;
 
   const axiosSecure = useAxiosSecure();
   const {
-    data: coins = 0,
+    data: userCoins = 0,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["coins", user?.email],
-    enabled: !loading && !!user?.email,
+    queryKey: ["user-coins", email],
+    enabled: !loading && !!email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users/coin/${user.email}`);
+      const res = await axiosSecure.get(`/users/coin/${email}`);
 
-      return res.data?.coins;
+      return res.data?.coins || 0;
     },
   });
-  return [coins, isLoading, refetch];
+  return { userCoins, isLoading, refetch };
 };
 
 export default useCoins;
