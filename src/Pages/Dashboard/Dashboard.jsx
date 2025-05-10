@@ -151,17 +151,6 @@ const Dashboard = () => {
             >
               Manage Task
             </NavLink>
-
-            <NavLink
-              to="/dashboard/withdrawals"
-              className={({ isActive }) =>
-                isActive
-                  ? "block text-green-600 font-semibold"
-                  : "block hover:underline"
-              }
-            >
-              Withdrawals
-            </NavLink>
           </nav>
         )}
 

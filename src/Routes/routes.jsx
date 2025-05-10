@@ -87,11 +87,11 @@ const routes = createBrowserRouter([
         element: <AdminHome />,
       },
       {
-        path: "maange-user",
+        path: "manage-user",
         element: <MangeUser />,
       },
       {
-        path: "manege-task",
+        path: "manage-task",
         element: <ManageTaks />,
       },
       {
