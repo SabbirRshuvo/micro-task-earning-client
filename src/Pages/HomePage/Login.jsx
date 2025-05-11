@@ -7,8 +7,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router";
 
 const Login = () => {
-  const { login, googleLogin, updateUserProfile, setUser, setLoading } =
-    useContext(AuthContext);
+  const { login, googleLogin } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -20,51 +19,56 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     const { email, password } = data;
+
     try {
-      await login(email, password);
+      const result = await login(email, password);
+      const user = result.user;
+
+      const { data: jwtData } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        { email: user.email }
+      );
+
+      localStorage.setItem("access-token", jwtData.token);
+
       Swal.fire("Success", "Logged in successfully!", "success");
-      navigate(from, { replace: true });
+      navigate(from);
     } catch (error) {
       Swal.fire("Error", error.message, "error");
     }
   };
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
     try {
       const result = await googleLogin();
       const user = result.user;
-      console.log(user);
-      if (!user.displayName || !user.photoURL) {
-        await updateUserProfile(
-          user.displayName || "user",
-          user.photoURL || "https://i.ibb.co/2nFq3nQ/default-avatar.png"
-        );
-      }
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
+      const userData = {
+        name: user?.displayName,
+        email: user?.email,
+        photoURL: user?.photoURL,
         role: "worker",
         coins: 10,
-      });
+      };
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+      const checkUser = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users?email=/${user?.email}`
+      );
+
+      if (checkUser.status === 404) {
+        await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+      }
+
+      const tokenRes = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
         email: user.email,
       });
-      setUser({
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-      });
+      localStorage.setItem("access-token", tokenRes.data.token);
 
       Swal.fire("Success", "Logged in with Google!", "success");
-      navigate(from, { replace: true });
+      navigate("/");
     } catch (error) {
+      console.error(error);
       Swal.fire("Error", error.message, "error");
-    } finally {
-      setLoading(false);
     }
   };
 

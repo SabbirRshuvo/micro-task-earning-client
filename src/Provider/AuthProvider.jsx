@@ -53,13 +53,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser && currentUser?.email) {
+      if (currentUser && currentUser.email) {
         try {
           const { data } = await axios.post(
             `${import.meta.env.VITE_API_URL}/jwt`,
             { email: currentUser.email }
           );
-
           localStorage.setItem("access-token", data.token);
 
           const res = await axios.get(
@@ -72,10 +71,9 @@ const AuthProvider = ({ children }) => {
               },
             }
           );
-
           setUser(res.data);
-        } catch (error) {
-          console.error("Error fetching user from DB:", error);
+        } catch (err) {
+          console.error("Error syncing user:", err);
           setUser(null);
           localStorage.removeItem("access-token");
         } finally {

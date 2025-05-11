@@ -7,7 +7,11 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 
 const Register = () => {
-  const { register: createUser, updateUserProfile } = useContext(AuthContext);
+  const {
+    register: createUser,
+    setUser,
+    updateUserProfile,
+  } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -18,31 +22,43 @@ const Register = () => {
   const onSubmit = async (data) => {
     const { name, email, password, photoURL, role } = data;
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      Swal.fire("Error", "Invalid email format", "error");
-      return;
-    }
-
-    if (password.length < 6) {
-      Swal.fire("Error", "Password must be at least 6 characters", "error");
-      return;
-    }
-
     try {
-      const userCredential = await createUser(email, password);
-      await updateUserProfile(name, photoURL);
-      const coins = role === "worker" ? 10 : 50;
+      const result = await createUser(email, password);
+      const user = result.user;
 
-      await axios.post(`${import.meta.env.VITE_API_URL}/users`, {
+      await updateUserProfile(name, photoURL);
+
+      const userData = {
         name,
         email,
         photoURL,
         role,
-        coins,
+        coins: role === "buyer" ? 50 : 10,
+      };
+
+      await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
+
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
+        email: user.email,
       });
-      Swal.fire("Success", "User registered successfully!", "success");
+      localStorage.setItem("access-token", res.data.token);
+      setUser(user);
+
+      const res2 = await axios.get(
+        `${import.meta.env.VITE_API_URL}/profile?email=${user?.email}`,
+        {
+          headers: {
+            authorization: `Bearer ${res.data.token}`,
+          },
+        }
+      );
+
+      setUser(res2.data);
+
+      Swal.fire("Success", "Account created successfully!", "success");
       navigate("/");
     } catch (error) {
+      console.error(error);
       Swal.fire("Error", error.message, "error");
     }
   };

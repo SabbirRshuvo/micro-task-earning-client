@@ -32,10 +32,10 @@ const Navbar = () => {
               Register
             </Link>
             <Link
-              to="https://github.com/your-client-repo"
+              to="https://github.com/SabbirRshuvo/micro-task-earning-client"
               target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700"
+              rel="safsd"
+              className="bg-green-600 px-3 py-1 rounded hover:bg-green-700"
             >
               Join as Developer
             </Link>
