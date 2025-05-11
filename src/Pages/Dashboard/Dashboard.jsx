@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
-import useSubmissions from "../../Hooks/useSubmissions";
+import useCoins from "../../Hooks/useCoins";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
-  const { totalEarningCoins } = useSubmissions();
+  const { userCoins } = useCoins();
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
@@ -168,10 +168,8 @@ const Dashboard = () => {
         {/* Topbar */}
         <header className="flex justify-between items-center px-4 py-3 border-b shadow-sm">
           <div className="flex flex-col items-end gap-1 text-right">
-            {totalEarningCoins ? (
-              <p className="text-sm font-semibold">
-                {totalEarningCoins ?? 0} coins
-              </p>
+            {userCoins ? (
+              <p className="text-sm font-semibold">{userCoins ?? 0} coins</p>
             ) : (
               "Loading"
             )}

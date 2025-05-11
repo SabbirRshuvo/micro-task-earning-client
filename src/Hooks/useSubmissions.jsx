@@ -4,29 +4,30 @@ import React from "react";
 import useAuth from "./useAuth";
 
 const useSubmissions = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const email = user?.email;
+
   const {
     data: submissions = [],
     isLoading,
-    isError,
     refetch,
   } = useQuery({
     queryKey: ["submissions", email],
+    enabled: !loading && !!email,
     queryFn: async () => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/submissions?workerEmail=${email}`
       );
-      return res.data;
+      return res.data; // Make sure this is an array
     },
-    enabled: !!email,
   });
 
-  const totalEarningCoins = submissions
-    .filter((item) => item.status === "approved")
-    .reduce((sum, item) => sum + item.payable_amount, 0);
+  const totalEarnedCoins = submissions?.reduce((sum, item) => {
+    const coin = parseInt(item.payable_amount) || 0;
+    return sum + coin;
+  }, 0);
 
-  return { submissions, totalEarningCoins, isLoading, isError, refetch };
+  return { submissions, totalEarnedCoins, refetch, isLoading };
 };
 
 export default useSubmissions;

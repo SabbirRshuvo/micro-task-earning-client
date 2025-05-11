@@ -1,19 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
-import axios from "axios";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
+import axios from "axios";
+import toast from "react-hot-toast";
 import useSubmissions from "../../../Hooks/useSubmissions";
 
 const Withdrawals = () => {
   const { user } = useAuth();
-  const [withdrawDollar, setWithdrawDollar] = useState(0);
-
-  const { totalEarningCoins, refetch } = useSubmissions();
-
-  // Load user data
-
+  const { totalEarnedCoins } = useSubmissions();
   const {
     register,
     handleSubmit,
@@ -22,144 +17,129 @@ const Withdrawals = () => {
     formState: { errors },
   } = useForm();
 
-  const coinsToWithdraw = watch("coin");
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
 
-  // update dollar value based on input
-  const handleCoinChange = (e) => {
-    const coin = parseInt(e.target.value);
-    if (!isNaN(coin)) {
-      setWithdrawDollar((coin / 20).toFixed(2));
-    } else {
-      setWithdrawDollar(0);
-    }
-  };
+  const coinToWithdraw = watch("withdrawal_coin");
 
   const onSubmit = async (data) => {
-    const withdrawalData = {
-      worker_email: user.email,
-      worker_name: user.displayName,
-      withdrawal_coin: parseInt(data.coin),
-      withdrawal_amount: parseFloat((data.coin / 20).toFixed(2)),
+    const withdrawal_coin = parseInt(data.withdrawal_coin);
+    const withdrawal_amount = withdrawal_coin / 20;
+
+    const withdrawData = {
+      worker_email: user?.email,
+      worker_name: user?.displayName,
+      withdrawal_coin,
+      withdrawal_amount,
       payment_system: data.payment_system,
       account_number: data.account_number,
-      withdraw_date: new Date().toISOString(),
+      withdraw_date: new Date(),
       status: "pending",
     };
 
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/withdrawals`,
-        withdrawalData
+        `${import.meta.env.VITE_API_URL}/withdrawals`,
+        withdrawData
       );
-      Swal.fire(
-        "Success!",
-        "Your withdrawal request has been submitted.",
-        "success"
-      );
+      toast.success("Withdrawal request submitted!");
       reset();
-      setWithdrawDollar(0);
-      refetch();
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error!", "Something went wrong!", "error");
+    } catch (err) {
+      toast.error("Failed to submit withdrawal.");
     }
   };
 
-  const canWithdraw = totalEarningCoins >= 200;
-
+  const handleCoinChange = (e) => {
+    const coins = parseInt(e.target.value);
+    if (coins > totalEarnedCoins) {
+      setWithdrawAmount(0);
+    } else {
+      setWithdrawAmount(coins / 20);
+    }
+  };
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">Withdraw Earnings</h2>
+    <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg mt-6">
+      <h2 className="text-2xl font-bold text-center mb-4">💸 Withdraw Coins</h2>
 
-      <div className="mb-6 text-center">
-        <p className="font-semibold">
-          Your Current Coin:{" "}
-          <span className="text-blue-600">{totalEarningCoins}</span>
+      <div className="mb-4 text-center">
+        <p className="text-lg font-semibold">
+          Available Coins: {totalEarnedCoins}
         </p>
-        <p className="font-semibold">
-          Equivalent Dollar:{" "}
-          <span className="text-green-600">
-            ${(totalEarningCoins / 20).toFixed(2)}
-          </span>
+        <p className="text-md text-green-600">
+          Withdrawal Value: ${totalEarnedCoins / 20}
         </p>
       </div>
 
-      {canWithdraw ? (
+      {totalEarnedCoins < 200 ? (
+        <p className="text-red-500 text-center font-semibold">
+          Insufficient coin
+        </p>
+      ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="font-semibold">Coin to Withdraw</label>
+            <label className="block font-medium">Coin To Withdraw</label>
             <input
               type="number"
-              {...register("coin", {
+              {...register("withdrawal_coin", {
                 required: true,
                 min: 200,
-                max: totalEarningCoins,
+                max: totalEarnedCoins,
               })}
               onChange={handleCoinChange}
-              placeholder="Enter coin amount"
-              className="w-full px-3 py-2 border rounded"
+              className="input input-bordered w-full focus:outline-0"
+              placeholder="Enter coin amount (min 200)"
             />
-            {errors.coin && (
-              <p className="text-sm text-red-500">
-                Enter a valid coin amount (min 200, max {totalEarningCoins})
+            {errors.withdrawal_coin && (
+              <p className="text-red-500 text-sm">
+                Enter a valid amount (min 200, max {totalEarnedCoins})
               </p>
             )}
           </div>
 
           <div>
-            <label className="font-semibold">Withdraw Amount ($)</label>
+            <label className="block font-medium">Withdraw Amount ($)</label>
             <input
-              type="text"
-              value={withdrawDollar}
+              type="number"
+              value={withdrawAmount}
               readOnly
-              className="w-full px-3 py-2 bg-gray-100 border rounded"
+              className="input input-bordered w-full bg-gray-100 focus:outline-0"
             />
           </div>
 
           <div>
-            <label className="font-semibold">Select Payment System</label>
+            <label className="block font-medium">Select Payment System</label>
             <select
               {...register("payment_system", { required: true })}
-              className="w-full px-3 py-2 border rounded"
+              className="select select-bordered w-full focus:outline-0"
             >
               <option value="">Select</option>
               <option value="Bkash">Bkash</option>
               <option value="Rocket">Rocket</option>
               <option value="Nagad">Nagad</option>
               <option value="Upay">Upay</option>
-              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Bank">Bank</option>
             </select>
             {errors.payment_system && (
-              <p className="text-sm text-red-500">
-                Please select a payment system
-              </p>
+              <p className="text-red-500 text-sm">Payment system is required</p>
             )}
           </div>
 
           <div>
-            <label className="font-semibold">Account Number</label>
+            <label className="block font-medium">Account Number</label>
             <input
               type="text"
               {...register("account_number", { required: true })}
-              placeholder="Enter account number"
-              className="w-full px-3 py-2 border rounded"
+              className="input input-bordered w-full focus:outline-0"
+              placeholder="Enter your account number"
             />
             {errors.account_number && (
-              <p className="text-sm text-red-500">Account number is required</p>
+              <p className="text-red-500 text-sm">Account number is required</p>
             )}
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-orange-600 text-white py-2 rounded hover:bg-orange-700 transition cursor-pointer"
-          >
-            Withdraw
+          <button type="submit" className="btn btn-secondary w-full">
+            Submit Withdrawal
           </button>
         </form>
-      ) : (
-        <p className="text-center text-red-600 font-semibold mt-4">
-          Insufficient coin (Minimum 200 required)
-        </p>
       )}
     </div>
   );

@@ -1,20 +1,34 @@
-import useSubmissions from "../../../Hooks/useSubmissions";
+import React from "react";
+import useAuth from "../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const WorkerHome = () => {
-  const { submissions, totalEarningCoins, isLoading, isError } =
-    useSubmissions();
+  const { user } = useAuth();
+  const email = user?.email;
+
+  const { data: submissions = [], isLoading } = useQuery({
+    queryKey: ["submissions", email],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/submissions?workerEmail=${email}`
+      );
+      return res.data;
+    },
+    enabled: !!email,
+  });
 
   const totalSubmission = submissions.length;
   const totalPending = submissions.filter(
     (item) => item.status === "pending"
   ).length;
+  const totalEarning = submissions
+    .filter((item) => item.status === "approved")
+    .reduce((sum, item) => sum + item.payable_amount, 0);
 
   const approvedSubmissions = submissions.filter(
     (item) => item.status === "approved"
   );
-
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error fetching submissions.</p>;
 
   if (isLoading)
     return <div className="text-center text-red-400">Loading...</div>;
@@ -33,7 +47,7 @@ const WorkerHome = () => {
         </div>
         <div className="bg-green-100 p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold">Total Earnings</h3>
-          <p className="text-2xl">{totalEarningCoins} coins</p>
+          <p className="text-2xl">{totalEarning} coins</p>
         </div>
       </div>
 
