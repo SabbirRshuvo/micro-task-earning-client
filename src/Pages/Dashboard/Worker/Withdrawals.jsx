@@ -4,11 +4,11 @@ import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
-import useSubmissions from "../../../Hooks/useSubmissions";
+import useCoins from "../../../Hooks/useCoins";
 
 const Withdrawals = () => {
   const { user } = useAuth();
-  const { totalEarnedCoins } = useSubmissions();
+  const { userCoins } = useCoins();
   const {
     register,
     handleSubmit,
@@ -43,6 +43,7 @@ const Withdrawals = () => {
       );
       toast.success("Withdrawal request submitted!");
       reset();
+      setWithdrawAmount(0);
     } catch (err) {
       toast.error("Failed to submit withdrawal.");
     }
@@ -50,7 +51,7 @@ const Withdrawals = () => {
 
   const handleCoinChange = (e) => {
     const coins = parseInt(e.target.value);
-    if (coins > totalEarnedCoins) {
+    if (coins > userCoins || coins < 200) {
       setWithdrawAmount(0);
     } else {
       setWithdrawAmount(coins / 20);
@@ -61,15 +62,13 @@ const Withdrawals = () => {
       <h2 className="text-2xl font-bold text-center mb-4">💸 Withdraw Coins</h2>
 
       <div className="mb-4 text-center">
-        <p className="text-lg font-semibold">
-          Available Coins: {totalEarnedCoins}
-        </p>
+        <p className="text-lg font-semibold">Available Coins: {userCoins}</p>
         <p className="text-md text-green-600">
-          Withdrawal Value: ${totalEarnedCoins / 20}
+          Withdrawal Value: ${userCoins / 20}
         </p>
       </div>
 
-      {totalEarnedCoins < 200 ? (
+      {userCoins < 200 ? (
         <p className="text-red-500 text-center font-semibold">
           Insufficient coin
         </p>
@@ -82,7 +81,7 @@ const Withdrawals = () => {
               {...register("withdrawal_coin", {
                 required: true,
                 min: 200,
-                max: totalEarnedCoins,
+                max: userCoins,
               })}
               onChange={handleCoinChange}
               className="input input-bordered w-full focus:outline-0"
@@ -90,7 +89,7 @@ const Withdrawals = () => {
             />
             {errors.withdrawal_coin && (
               <p className="text-red-500 text-sm">
-                Enter a valid amount (min 200, max {totalEarnedCoins})
+                Enter a valid amount (min 200, max {userCoins})
               </p>
             )}
           </div>

@@ -73,7 +73,7 @@ const MangeUser = () => {
                   <select
                     value={u.role}
                     onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                    className="border p-1 rounded"
+                    className="border p-1 rounded cursor-pointer"
                   >
                     <option value="admin">Admin</option>
                     <option value="buyer">Buyer</option>
@@ -84,7 +84,7 @@ const MangeUser = () => {
                 <td>
                   <button
                     onClick={() => handleRemove(u._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="bg-red-600 text-white px-3 py-1 rounded cursor-pointer"
                   >
                     Remove
                   </button>

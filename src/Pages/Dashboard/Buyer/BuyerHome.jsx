@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import SubmissionModal from "./SubmissionModal";
 
@@ -11,17 +10,19 @@ const BuyerHome = () => {
   const queryClient = useQueryClient();
   const [selectedSubmission, setSelectedSubmission] = useState(null);
 
+  // ✅ Correctly pass email in query string
   const { data: stats = {} } = useQuery({
     queryKey: ["buyerStats", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/stats/${user.email}`);
+      const res = await axiosSecure.get(`/buyer-stats?email=${user.email}`);
       return res.data;
     },
   });
 
-  // Fetch submissions to review
   const { data: reviews = [] } = useQuery({
     queryKey: ["taskSubmissions", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(`/submissions/review/${user.email}`);
       return res.data;
@@ -30,33 +31,30 @@ const BuyerHome = () => {
 
   const approveMutation = useMutation({
     mutationFn: async (submissionId) => {
-      return axios.patch(
-        `${import.meta.env.VITE_API_URL}/submissions/approve/${submissionId}`
-      );
+      return axiosSecure.patch(`/submissions/approve/${submissionId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["taskSubmissions"]);
+      queryClient.invalidateQueries(["buyerStats"]);
     },
   });
 
   const rejectMutation = useMutation({
     mutationFn: async (submissionId) => {
-      return axios.patch(
-        `${import.meta.env.VITE_API_URL}/submissions/reject/${submissionId}`
-      );
+      return axiosSecure.patch(`/submissions/reject/${submissionId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["taskSubmissions"]);
+      queryClient.invalidateQueries(["buyerStats"]);
     },
   });
 
-  console.log(stats);
-
+  console.log(reviews);
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Buyer Dashboard</h2>
 
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white p-4 shadow rounded">
           Total Tasks: {stats.totalTasks}
         </div>
@@ -77,7 +75,7 @@ const BuyerHome = () => {
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th>Worker</th>
+                  <th>Buyer</th>
                   <th>Task</th>
                   <th>Payable ($)</th>
                   <th>Actions</th>
@@ -86,7 +84,7 @@ const BuyerHome = () => {
               <tbody>
                 {reviews.map((submission) => (
                   <tr key={submission._id}>
-                    <td>{submission.worker_name}</td>
+                    <td>{submission.buyer_name}</td>
                     <td>{submission.task_title}</td>
                     <td>{submission.payable_amount}</td>
                     <td>
@@ -116,7 +114,7 @@ const BuyerHome = () => {
           </div>
         </>
       ) : (
-        <p>no data avaliable</p>
+        <p>No submissions to review</p>
       )}
 
       {selectedSubmission && (

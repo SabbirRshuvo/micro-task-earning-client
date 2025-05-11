@@ -1,45 +1,44 @@
 /* eslint-disable no-unused-vars */
 import { useQuery } from "@tanstack/react-query";
 
-import useAxiosSecure from "../Hooks/useAxiosSecure";
-import useAuth from "../Hooks/useAuth";
+import axios from "axios";
+import useCoins from "../Hooks/useCoins";
 
 const BestWorkers = () => {
-  const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
-  const { data: workers = [], isLoading } = useQuery({
-    queryKey: ["top-workers"],
+  const { userCoins } = useCoins();
+  const {
+    data: workers = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["bestWorkers"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/top-workers");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/best-workers`
+      );
       return res.data;
     },
   });
 
-  if (isLoading) {
-    return <p className="text-center py-10">Loading...</p>;
-  }
+  if (isLoading) return <p className="text-center">Loading top workers...</p>;
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center"> Best Workers</h2>
+    <div className="max-w-6xl mx-auto p-4 mt-6">
+      <h2 className="text-3xl font-bold text-center mb-6"> Best Workers</h2>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {workers.map((worker) => (
+        {workers.map((worker, idx) => (
           <div
-            key={worker._id}
-            className="bg-white rounded-xl shadow-md p-4 text-center"
+            key={idx}
+            className="bg-white shadow-md rounded-lg p-4 text-center hover:shadow-xl transition"
           >
             <img
               src={worker.photoURL}
               alt={worker.name}
-              className="w-20 h-20 mx-auto rounded-full object-cover mb-2"
+              className="w-24 h-24 mx-auto rounded-full mb-4 object-cover"
             />
-            <h3 className="text-lg font-semibold">{worker?.name}</h3>
-            <p className="text-sm text-gray-600">{worker?.email}</p>
-            {user.coins && (
-              <p className="mt-2 font-bold text-green-600">
-                {user.coins} coins
-              </p>
-            )}
+            <h3 className="text-xl font-semibold">{worker.name}</h3>
+            <p className="text-green-600 font-medium">Coins: {worker.coins}</p>
           </div>
         ))}
       </div>

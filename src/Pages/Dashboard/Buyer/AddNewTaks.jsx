@@ -34,7 +34,7 @@ const AddNewTaks = () => {
         const payableAmount = parseInt(data.payable_amount);
         const totalPayable = requiredWorkers * payableAmount;
 
-        const userRes = await axiosSecure.get(`/users?email=/${user.email}`);
+        const userRes = await axiosSecure.get(`/users?email=${user.email}`);
         const userCoins = userRes.data.coins;
 
         if (totalPayable > userCoins) {
@@ -64,15 +64,11 @@ const AddNewTaks = () => {
         const taskRes = await axiosSecure.post(`/tasks`, task);
 
         if (taskRes.data.insertedId) {
-          await axios.patch(
-            `${import.meta.env.VITE_API_URL}/users/reduce-coins`,
-            {
-              email: user.email,
-              coins: totalPayable,
-            }
-          );
+          await axiosSecure.patch(`/users/reduce-coins`, {
+            email: user.email,
+            coins: totalPayable,
+          });
 
-          console.log("refething");
           refetch();
 
           Swal.fire("Success!", "Task added successfully.", "success");

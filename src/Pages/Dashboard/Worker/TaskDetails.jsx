@@ -1,41 +1,40 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
+const fetchTaskById = async (id) => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/tasks/${id}`);
+  return res.data;
+};
 const TaskDetails = () => {
-  const { user } = useAuth();
   const { id } = useParams();
-  const [submissionDetails, setSubmissionDetails] = useState("");
+  const { user } = useAuth();
+  const { register, handleSubmit, reset } = useForm();
 
-  const { data: task, isLoading } = useQuery({
+  const {
+    data: task,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["task", id],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/tasks/${id}`
-      );
-      return res.data;
-    },
+    queryFn: () => fetchTaskById(id),
   });
 
-  if (isLoading)
-    return <div className="text-center text-red-300">Loading...</div>;
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     const submission = {
       task_id: task._id,
       task_title: task.task_title,
       payable_amount: task.payable_amount,
-      worker_email: user?.email,
-      worker_name: user?.name,
-      submission_details: submissionDetails,
-      Buyer_name: task.buyer_name,
-      Buyer_email: task.buyer_email,
+      submission_details: data.submission_details,
+      worker_name: user.displayName,
+      worker_email: user.email,
+      buyer_name: task.buyer_name,
+      buyer_email: task.buyer_email,
+      current_date: new Date().toISOString(),
+      status: "pending",
     };
 
     try {
@@ -44,53 +43,57 @@ const TaskDetails = () => {
         submission
       );
       if (res.data.insertedId) {
-        Swal.fire("Submitted successfully!", "", "success");
-        setSubmissionDetails("");
+        Swal.fire("Success", "Submission Sent Successfully!", "success");
+        reset();
       }
     } catch (err) {
-      Swal.fire("Submission failed", "", "error", err);
+      console.error(err);
+      Swal.fire("Error", "Failed to submit your task", "error");
     }
   };
 
-  return (
-    <div className="p-6 max-w-3xl mx-auto bg-white shadow rounded-lg space-y-6">
-      <h1 className="text-2xl font-bold">{task.task_title}</h1>
+  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  if (isError)
+    return (
+      <div className="text-center mt-10 text-red-500">Error loading task.</div>
+    );
 
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg my-6">
+      <h2 className="text-3xl font-bold mb-4 text-center">{task.task_title}</h2>
       <p>
-        <strong>Buyer:</strong> {task.buyer_name}
+        <strong>Buyer Name:</strong> {task.buyer_name}
       </p>
       <p>
-        <strong>Completion Date:</strong> {task.completion_date}
+        <strong>Buyer Email:</strong> {task.buyer_email}
       </p>
       <p>
         <strong>Payable Amount:</strong> {task.payable_amount} coins
       </p>
       <p>
-        <strong>Required Workers:</strong> {task.required_workers}
+        <strong>Completion Date:</strong> {task.completion_date}
       </p>
       <p>
-        <strong>Details:</strong> {task.task_detail || "No details provided."}
+        <strong>Required Workers:</strong> {task.required_workers}
+      </p>
+      <p className="my-4">
+        <strong>Task Details:</strong>
+        <br /> {task.task_detail}
       </p>
 
-      {/* Submission Form */}
-      <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-        <label className="block font-semibold">
-          Your Work Details (submission_details):
-        </label>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+        <label className="block font-medium">Submit Your Work (Details)</label>
         <textarea
-          value={submissionDetails}
-          onChange={(e) => setSubmissionDetails(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 "
+          {...register("submission_details", { required: true })}
+          className="w-full border border-gray-300 rounded-md p-3"
           rows="5"
-          placeholder="Describe your work here..."
-          required
+          placeholder="Enter your submission details here..."
         ></textarea>
-
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg cursor-pointer"
+          className="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 transition cursor-pointer"
         >
-          Submit
+          Submit Work
         </button>
       </form>
     </div>

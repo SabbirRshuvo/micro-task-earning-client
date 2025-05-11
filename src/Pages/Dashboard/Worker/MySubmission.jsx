@@ -46,7 +46,7 @@ const MySubmission = () => {
                   <td className="px-4 py-2 border">
                     {item.payable_amount} coins
                   </td>
-                  <td className="px-4 py-2 border">{item.Buyer_name}</td>
+                  <td className="px-4 py-2 border">{item.buyer_name}</td>
                   <td className="px-4 py-2 border">
                     <span
                       className={`px-3 py-1 rounded-full text-white 

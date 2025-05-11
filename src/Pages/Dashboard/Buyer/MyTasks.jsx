@@ -34,6 +34,7 @@ const MyTasks = () => {
           },
         }
       );
+
       return res.data;
     },
     onSuccess: () => {
@@ -55,7 +56,6 @@ const MyTasks = () => {
           submission_info: task.submission_info,
         }
       );
-
       return res.data;
     },
     onSuccess: () => {

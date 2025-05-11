@@ -7,19 +7,17 @@ const Banner = () => {
     {
       heading: "Unlock Your Earning Potential",
       title: "Join as a Micro-Task Worker Today!",
-      image: "https://i.ibb.co.com/wFZBVFqF/pic.jpg",
+      image: "https://source.unsplash.com/1600x900/?freelance,work",
     },
     {
       heading: "Find Talent Faster",
       title: "Post Your Tasks and Get Things Done",
-      image:
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1470&q=80",
+      image: "https://source.unsplash.com/1600x900/?business,meeting",
     },
     {
       heading: "Effortless Task Management",
       title: "Track, Approve, and Earn With Ease",
-      image:
-        "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?auto=format&fit=crop&w=1470&q=80",
+      image: "https://source.unsplash.com/1600x900/?technology,office",
     },
   ];
   return (

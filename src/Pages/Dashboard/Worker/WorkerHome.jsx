@@ -7,55 +7,58 @@ const WorkerHome = () => {
   const { user } = useAuth();
   const email = user?.email;
 
-  const { data: submissions = [], isLoading } = useQuery({
-    queryKey: ["submissions", email],
+  const { data: stats = {}, isLoading: statsLoading } = useQuery({
+    queryKey: ["workerStats", email],
     queryFn: async () => {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/submissions?workerEmail=${email}`
+        `${import.meta.env.VITE_API_URL}/worker-stats?email=${email}`
       );
       return res.data;
     },
     enabled: !!email,
   });
 
-  const totalSubmission = submissions.length;
-  const totalPending = submissions.filter(
-    (item) => item.status === "pending"
-  ).length;
-  const totalEarning = submissions
-    .filter((item) => item.status === "approved")
-    .reduce((sum, item) => sum + item.payable_amount, 0);
+  const { data: approvedSubmissions = [], isLoading: approvedLoading } =
+    useQuery({
+      queryKey: ["approvedSubmissions", email],
+      queryFn: async () => {
+        const res = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/approved-submissions?workerEmail=${email}`
+        );
+        return res.data;
+      },
+      enabled: !!email,
+    });
 
-  const approvedSubmissions = submissions.filter(
-    (item) => item.status === "approved"
-  );
+  if (statsLoading || approvedLoading) {
+    return <div className="text-center text-blue-500">Loading...</div>;
+  }
 
-  if (isLoading)
-    return <div className="text-center text-red-400">Loading...</div>;
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Worker Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-6"> Worker Dashboard</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         <div className="bg-blue-100 p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold">Total Submissions</h3>
-          <p className="text-2xl">{totalSubmission}</p>
+          <p className="text-3xl">{stats.totalSubmission}</p>
         </div>
         <div className="bg-yellow-100 p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold">Pending Submissions</h3>
-          <p className="text-2xl">{totalPending}</p>
+          <p className="text-3xl">{stats.totalPending}</p>
         </div>
         <div className="bg-green-100 p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold">Total Earnings</h3>
-          <p className="text-2xl">{totalEarning} coins</p>
+          <p className="text-3xl">{stats.totalEarning} coins</p>
         </div>
       </div>
 
-      {/* Approved Submission Table */}
       <div>
-        <h3 className="text-xl font-semibold mb-2">Approved Submissions</h3>
+        <h3 className="text-xl font-semibold mb-4">My Approved Submissions</h3>
         {approvedSubmissions.length === 0 ? (
-          <p>No approved submissions.</p>
+          <p className="text-gray-500">No approved submissions found.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full border text-sm">
@@ -76,7 +79,7 @@ const WorkerHome = () => {
                     <td className="px-4 py-2 border">
                       {item.payable_amount} coins
                     </td>
-                    <td className="px-4 py-2 border">{item.Buyer_name}</td>
+                    <td className="px-4 py-2 border">{item.buyer_name}</td>
                     <td className="px-4 py-2 border">
                       <span className="bg-green-600 text-white px-3 py-1 rounded-full">
                         {item.status}
