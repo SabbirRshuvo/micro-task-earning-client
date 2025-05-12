@@ -54,10 +54,7 @@ const Navbar = () => {
             >
               <FiLogOut /> Logout
             </button>
-            <Link
-              to="/allusers"
-              className="hover:opacity-80 transition duration-200"
-            >
+            <div className="hover:opacity-80 transition duration-200">
               {loading ? (
                 <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
               ) : user?.photoURL ? (
@@ -69,7 +66,7 @@ const Navbar = () => {
               ) : (
                 <FaUserCircle className="text-3xl text-gray-600" />
               )}
-            </Link>
+            </div>
 
             <a
               href="https://github.com/SabbirRshuvo/micro-task-earning-client"

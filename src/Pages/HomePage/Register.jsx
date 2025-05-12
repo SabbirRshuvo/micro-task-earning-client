@@ -38,9 +38,13 @@ const Register = () => {
 
       await axios.post(`${import.meta.env.VITE_API_URL}/users`, userData);
 
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/jwt`, {
-        email: user.email,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: user.email,
+        },
+        { withCredentials: true }
+      );
       localStorage.setItem("access-token", res.data.token);
       setUser(user);
 

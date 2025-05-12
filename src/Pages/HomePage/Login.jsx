@@ -26,7 +26,8 @@ const Login = () => {
 
       const { data: jwtData } = await axios.post(
         `${import.meta.env.VITE_API_URL}/jwt`,
-        { email: user.email }
+        { email: user.email },
+        { withCredentials: true }
       );
 
       localStorage.setItem("access-token", jwtData.token);
