@@ -3,19 +3,20 @@ import { useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const TaskList = () => {
+  const axiosSecure = useAxiosSecure();
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetching tasks directly inside the useEffect hook
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`);
-        setTasks(res.data); // Store fetched tasks in the state
-        setIsLoading(false); // Stop loading after data is fetched
+        const res = await axiosSecure.get(`/tasks`);
+        setTasks(res.data);
+        setIsLoading(false);
       } catch (err) {
         console.error("Error fetching tasks:", err);
         setIsLoading(false);
@@ -23,7 +24,7 @@ const TaskList = () => {
     };
 
     fetchTasks();
-  }, []); // Empty dependency array ensures this effect runs only once when the component is mounted
+  }, []);
 
   if (isLoading) {
     return <div className="text-center text-blue-500">Loading tasks...</div>;

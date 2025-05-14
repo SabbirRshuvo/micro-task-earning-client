@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import axios from "axios";
+
 import Swal from "sweetalert2";
 
 const AdminHome = () => {
@@ -24,8 +24,8 @@ const AdminHome = () => {
   });
 
   const handleApprove = async (request) => {
-    const res = await axios.patch(
-      `${import.meta.env.VITE_API_URL}/admin/withdraw-approve/${request._id}`,
+    const res = await axiosSecure.patch(
+      `/admin/withdraw-approve/${request._id}`,
       {
         email: request.worker_email,
         coins: request.withdrawal_coin,
@@ -62,7 +62,6 @@ const AdminHome = () => {
         <table className="table w-full bg-white shadow rounded">
           <thead>
             <tr className="bg-gray-100">
-              <th>Worker</th>
               <th>Coin</th>
               <th>Amount ($)</th>
               <th>Payment System</th>
@@ -73,7 +72,6 @@ const AdminHome = () => {
           <tbody>
             {withdrawals.map((w) => (
               <tr key={w._id}>
-                <td>{w.worker_name}</td>
                 <td>{w.withdrawal_coin}</td>
                 <td>${w.withdrawal_amount}</td>
                 <td>{w.payment_system}</td>

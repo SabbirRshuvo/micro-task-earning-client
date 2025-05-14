@@ -36,7 +36,7 @@ const MangeUser = () => {
   };
 
   const handleRoleChange = async (userId, newRole) => {
-    await axios.patch(`${import.meta.env.VITE_API_URL}/admin/users/${userId}`, {
+    await axiosSecure.patch(`/admin/users/${userId}`, {
       role: newRole,
     });
     setRefresh(!refresh);

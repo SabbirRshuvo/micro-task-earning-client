@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const useAxiosSecure = () => {
+  const navigate = useNavigate();
   const axiosSecure = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Request interceptor
@@ -25,9 +25,13 @@ const useAxiosSecure = () => {
     const responseInterceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401 || error.response?.status === 403) {
+        const status = error?.response?.status;
+
+        if (status === 400 || status === 401) {
           localStorage.removeItem("access-token");
           navigate("/login");
+        } else if (status === 403) {
+          navigate("forbidden");
         }
         return Promise.reject(error);
       }

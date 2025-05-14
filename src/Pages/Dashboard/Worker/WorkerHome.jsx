@@ -1,18 +1,17 @@
 import React from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const WorkerHome = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const email = user?.email;
 
   const { data: stats = {}, isLoading: statsLoading } = useQuery({
     queryKey: ["workerStats", email],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/worker-stats?email=${email}`
-      );
+      const res = await axiosSecure.get(`/worker-stats?email=${email}`);
       return res.data;
     },
     enabled: !!email,
@@ -22,10 +21,8 @@ const WorkerHome = () => {
     useQuery({
       queryKey: ["approvedSubmissions", email],
       queryFn: async () => {
-        const res = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/approved-submissions?workerEmail=${email}`
+        const res = await axiosSecure.get(
+          `/approved-submissions?workerEmail=${email}`
         );
         return res.data;
       },

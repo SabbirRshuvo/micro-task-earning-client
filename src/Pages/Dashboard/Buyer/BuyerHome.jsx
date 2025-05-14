@@ -10,7 +10,6 @@ const BuyerHome = () => {
   const queryClient = useQueryClient();
   const [selectedSubmission, setSelectedSubmission] = useState(null);
 
-  // ✅ Correctly pass email in query string
   const { data: stats = {} } = useQuery({
     queryKey: ["buyerStats", user?.email],
     enabled: !!user?.email,
@@ -49,7 +48,6 @@ const BuyerHome = () => {
     },
   });
 
-  console.log(reviews);
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Buyer Dashboard</h2>

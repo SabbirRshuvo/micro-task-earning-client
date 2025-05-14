@@ -25,7 +25,6 @@ const CheckoutForm = ({ coins, price }) => {
     setProcessing(true);
 
     try {
-      // 1. Create PaymentIntent from server
       const { data: clientSecretData } = await axiosSecure.post(
         "/create-payment-intent",
         {
@@ -33,7 +32,6 @@ const CheckoutForm = ({ coins, price }) => {
         }
       );
 
-      // 2. Confirm Card Payment
       const paymentResult = await stripe.confirmCardPayment(
         clientSecretData.clientSecret,
         {
@@ -56,10 +54,10 @@ const CheckoutForm = ({ coins, price }) => {
           date: new Date(),
         };
 
-        // 3. Save payment info and update coins
         const res = await axiosSecure.post("/payments", paymentInfo);
         if (res.data.success) {
           refetch();
+          window.location.reload();
           Swal.fire("Success", "Coins purchased successfully!", "success");
         }
       } else {

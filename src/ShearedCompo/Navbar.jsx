@@ -13,7 +13,6 @@ const Navbar = () => {
     console.log("logged out");
     navigate("/");
   };
-  console.log(user?.photoURL);
   return (
     <nav className="bg-gray-900 text-white px-4 py-3 shadow-md flex justify-between items-center">
       {/* Logo / Website Name */}

@@ -3,7 +3,7 @@ import Main from "../MainLayout/Main";
 import Home from "../Pages/HomePage/Home";
 import Register from "../Pages/HomePage/Register";
 import Login from "../Pages/HomePage/Login";
-import PrivateRoute from "../PrivateRoute/PrivateRoute";
+
 import AllUsers from "../Pages/HomePage/AllUsers";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import WorkerHome from "../Pages/Dashboard/Worker/WorkerHome";
@@ -21,11 +21,20 @@ import PurchasePayment from "../Pages/Dashboard/Buyer/PurchasePayment";
 import PaymentHistory from "../Pages/Dashboard/Buyer/PaymentHistory";
 import TaskDetails from "../Pages/Dashboard/Worker/TaskDetails";
 
+// protected Routes
+
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import AdminRoute from "../PrivateRoute/AdminRoute";
+import BuyerRoute from "../PrivateRoute/BuyerRoute";
+import WorkerRoute from "../PrivateRoute/WorkerRoute";
+import ErrorPage from "../ShearedCompo/ErrorPage";
+import Forbidden from "../ShearedCompo/Forbidden";
+
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
-    errorElement: "error",
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -45,7 +54,15 @@ const routes = createBrowserRouter([
       },
       {
         path: "/allusers",
-        element: <AllUsers />,
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/forbidden",
+        element: <Forbidden />,
       },
     ],
   },
@@ -56,59 +73,119 @@ const routes = createBrowserRouter([
         <Dashboard />
       </PrivateRoute>
     ),
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "worker-home",
-        element: <WorkerHome />,
+        element: (
+          <WorkerRoute>
+            <WorkerHome />
+          </WorkerRoute>
+        ),
       },
       {
         path: "task-list",
-        element: <TaskList />,
+        element: (
+          <WorkerRoute>
+            <TaskList />
+          </WorkerRoute>
+        ),
       },
       {
         path: "my-submission",
-        element: <MySubmission />,
+        element: (
+          <WorkerRoute>
+            <MySubmission />
+          </WorkerRoute>
+        ),
       },
-      { path: "withdrawals", element: <Withdrawals /> },
+      {
+        path: "withdrawals",
+        element: (
+          <WorkerRoute>
+            <Withdrawals />
+          </WorkerRoute>
+        ),
+      },
       {
         path: "buyer-home",
-        element: <BuyerHome />,
+        element: (
+          <BuyerRoute>
+            <BuyerHome />
+          </BuyerRoute>
+        ),
       },
       {
         path: "add-new-task",
-        element: <AddNewTaks />,
+        element: (
+          <BuyerRoute>
+            <AddNewTaks />
+          </BuyerRoute>
+        ),
       },
       {
         path: "my-task",
-        element: <MyTasks />,
+        element: (
+          <BuyerRoute>
+            <MyTasks />
+          </BuyerRoute>
+        ),
       },
       {
         path: "purchase-coin",
-        element: <PurchaseCoin />,
+        element: (
+          <BuyerRoute>
+            <PurchaseCoin />
+          </BuyerRoute>
+        ),
       },
       {
         path: "admin-home",
-        element: <AdminHome />,
+        element: (
+          <AdminRoute>
+            <AdminHome />
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-user",
-        element: <MangeUser />,
+        element: (
+          <AdminRoute>
+            <MangeUser />
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-task",
-        element: <ManageTaks />,
+        element: (
+          <AdminRoute>
+            <ManageTaks />
+          </AdminRoute>
+        ),
       },
       {
         path: "parchase-payment",
-        element: <PurchasePayment />,
+        element: (
+          <BuyerRoute>
+            <PurchasePayment />
+          </BuyerRoute>
+        ),
       },
       {
         path: "payment-history",
-        element: <PaymentHistory />,
+        element: (
+          <BuyerRoute>
+            <PaymentHistory />
+          </BuyerRoute>
+        ),
       },
       {
         path: "task-details/:id",
-        element: <TaskDetails />,
+        element: (
+          <WorkerRoute>
+            <TaskDetails />
+          </WorkerRoute>
+        ),
       },
     ],
   },

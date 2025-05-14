@@ -66,7 +66,7 @@ const ManageTaks = () => {
                 <td>
                   <button
                     onClick={() => handleDelete(task._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded"
+                    className="bg-red-600 text-white px-3 py-1 rounded cursor-pointer"
                   >
                     Delete Task
                   </button>

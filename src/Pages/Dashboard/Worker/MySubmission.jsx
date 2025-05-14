@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
-import axios from "axios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MySubmission = () => {
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ["mySubmissions", user?.email],
     queryFn: async () => {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/submissions?workerEmail=${user.email}`
+      const res = await axiosSecure.get(
+        `/submissions?workerEmail=${user.email}`
       );
       return res.data;
     },

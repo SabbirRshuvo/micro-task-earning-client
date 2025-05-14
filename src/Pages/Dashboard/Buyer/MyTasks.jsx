@@ -3,8 +3,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MyTasks = () => {
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const { user } = useAuth();
   const [editingTask, setEditingTask] = useState(null);
@@ -21,7 +23,6 @@ const MyTasks = () => {
     },
   });
 
-  // Delete Task
   const deleteTaskMutation = useMutation({
     mutationFn: async (task) => {
       const res = await axios.delete(
@@ -44,11 +45,10 @@ const MyTasks = () => {
     },
   });
 
-  // ✅ Update Task
   const updateTaskMutation = useMutation({
     mutationFn: async (task) => {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/tasks/${task._id}`,
+      const res = await axiosSecure.patch(
+        `/tasks/${task._id}`,
 
         {
           task_title: task.task_title,
