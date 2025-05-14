@@ -70,7 +70,6 @@ const AddNewTaks = () => {
           });
 
           refetch();
-          window.location.reload();
 
           Swal.fire("Success!", "Task added successfully.", "success");
 

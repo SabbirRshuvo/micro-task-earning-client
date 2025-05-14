@@ -1,6 +1,7 @@
 import React from "react";
 import useAuth from "../Hooks/useAuth";
 import Spinner from "../ShearedCompo/Spinner";
+import { Navigate } from "react-router";
 
 const BuyerRoute = ({ children }) => {
   const { user, loading } = useAuth();

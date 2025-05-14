@@ -5,7 +5,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import SubmissionModal from "./SubmissionModal";
 
 const BuyerHome = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -32,7 +32,9 @@ const BuyerHome = () => {
     mutationFn: async (submissionId) => {
       return axiosSecure.patch(`/submissions/approve/${submissionId}`);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      const res = await axiosSecure.get(`/users?email=${user?.email}`);
+      setUser((prev) => ({ ...prev, coins: res.data?.coins }));
       queryClient.invalidateQueries(["taskSubmissions"]);
       queryClient.invalidateQueries(["buyerStats"]);
     },

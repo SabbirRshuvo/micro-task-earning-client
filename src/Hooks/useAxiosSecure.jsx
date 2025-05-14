@@ -31,7 +31,7 @@ const useAxiosSecure = () => {
           localStorage.removeItem("access-token");
           navigate("/login");
         } else if (status === 403) {
-          navigate("forbidden");
+          navigate("/forbidden");
         }
         return Promise.reject(error);
       }

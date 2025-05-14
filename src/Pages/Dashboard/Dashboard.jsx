@@ -1,11 +1,30 @@
+/* eslint-disable no-unused-vars */
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import useCoins from "../../Hooks/useCoins";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { userCoins } = useCoins();
+  const { userCoins, refetch } = useCoins();
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const [prevCoins, setPrevCoins] = useState({
+    authCoin: user?.coins,
+    dbCoins: userCoins,
+  });
+  useEffect(() => {
+    if (user?.coins !== prevCoins.authCoin || userCoins !== prevCoins.dbCoins) {
+      setRefreshKey((prev) => prev + 1);
+      setPrevCoins({
+        authCoin: user?.coins,
+        dbCoins: userCoins,
+      });
+    }
+  }, [user?.coins, userCoins]);
+
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
       <aside className="bg-gray-100 border-r p-4">
