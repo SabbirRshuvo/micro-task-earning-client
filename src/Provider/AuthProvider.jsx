@@ -53,6 +53,8 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
+
       if (currentUser && currentUser.email) {
         try {
           const { data } = await axios.post(

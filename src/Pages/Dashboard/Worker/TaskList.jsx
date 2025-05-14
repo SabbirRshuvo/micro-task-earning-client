@@ -3,11 +3,9 @@ import { useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Spinner from "../../../ShearedCompo/Spinner";
 
 const TaskList = () => {
-  const axiosSecure = useAxiosSecure();
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -15,7 +13,7 @@ const TaskList = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const res = await axiosSecure.get(`/tasks`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`);
         setTasks(res.data);
         setIsLoading(false);
       } catch (err) {

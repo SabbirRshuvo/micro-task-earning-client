@@ -53,7 +53,7 @@ const Login = () => {
       };
 
       const checkUser = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users?email=/${user?.email}`
+        `${import.meta.env.VITE_API_URL}/users?email=${user?.email}`
       );
 
       if (checkUser.status === 404) {

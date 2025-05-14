@@ -1,11 +1,9 @@
 import React from "react";
-import useAxiosSecure from "./useAxiosSecure";
 import useAuth from "./useAuth";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const usePayments = () => {
-  const axiosSecure = useAxiosSecure();
-
   const { user } = useAuth();
 
   const {
@@ -16,7 +14,9 @@ const usePayments = () => {
     queryKey: ["payments", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/payments/${user.email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/payments/${user.email}`
+      );
       return res.data;
     },
   });

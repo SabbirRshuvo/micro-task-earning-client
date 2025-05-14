@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -7,12 +6,13 @@ import Spinner from "../../../ShearedCompo/Spinner";
 
 const ManageTaks = () => {
   const [refresh, setRefresh] = useState(false);
-  const axiosSecure = useAxiosSecure();
 
   const { data: tasks = [], isLoading } = useQuery({
     queryKey: ["admin-tasks", refresh],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/tasks");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin/tasks`
+      );
       return res.data;
     },
   });

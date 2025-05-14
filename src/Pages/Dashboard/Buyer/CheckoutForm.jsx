@@ -2,14 +2,14 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+
 import useCoins from "../../../Hooks/useCoins";
+import axios from "axios";
 const CheckoutForm = ({ coins, price }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
   const { refetch } = useCoins();
@@ -25,8 +25,8 @@ const CheckoutForm = ({ coins, price }) => {
     setProcessing(true);
 
     try {
-      const { data: clientSecretData } = await axiosSecure.post(
-        "/create-payment-intent",
+      const { data: clientSecretData } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/create-payment-intent`,
         {
           price,
         }
@@ -54,7 +54,10 @@ const CheckoutForm = ({ coins, price }) => {
           date: new Date(),
         };
 
-        const res = await axiosSecure.post("/payments", paymentInfo);
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/payments`,
+          paymentInfo
+        );
         if (res.data.success) {
           refetch();
           window.location.reload();

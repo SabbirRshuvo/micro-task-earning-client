@@ -1,20 +1,30 @@
 import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+
 import SubmissionModal from "./SubmissionModal";
+import axios from "axios";
+import useCoins from "../../../Hooks/useCoins";
+import { useNavigate } from "react-router";
 
 const BuyerHome = () => {
   const { user, setUser } = useAuth();
-  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const navigate = useNavigate();
+  const { userCoins } = useCoins();
+
+  if (userCoins < 0) {
+    navigate("/dashboard/purchase-coin");
+  }
 
   const { data: stats = {} } = useQuery({
     queryKey: ["buyerStats", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/buyer-stats?email=${user.email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/buyer-stats?email=${user.email}`
+      );
       return res.data;
     },
   });
@@ -23,17 +33,23 @@ const BuyerHome = () => {
     queryKey: ["taskSubmissions", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/submissions/review/${user.email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/submissions/review/${user.email}`
+      );
       return res.data;
     },
   });
 
   const approveMutation = useMutation({
     mutationFn: async (submissionId) => {
-      return axiosSecure.patch(`/submissions/approve/${submissionId}`);
+      return axios.patch(
+        `${import.meta.env.VITE_API_URL}/submissions/approve/${submissionId}`
+      );
     },
     onSuccess: async () => {
-      const res = await axiosSecure.get(`/users?email=${user?.email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users?email=${user?.email}`
+      );
       setUser((prev) => ({ ...prev, coins: res.data?.coins }));
       queryClient.invalidateQueries(["taskSubmissions"]);
       queryClient.invalidateQueries(["buyerStats"]);
@@ -42,7 +58,9 @@ const BuyerHome = () => {
 
   const rejectMutation = useMutation({
     mutationFn: async (submissionId) => {
-      return axiosSecure.patch(`/submissions/reject/${submissionId}`);
+      return axios.patch(
+        `${import.meta.env.VITE_API_URL}/submissions/reject/${submissionId}`
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["taskSubmissions"]);

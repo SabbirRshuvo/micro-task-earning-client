@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 
-import useAxiosSecure from "./useAxiosSecure";
+import axios from "axios";
 
 const useCoins = () => {
   const { user } = useAuth();
-  const axiosSecure = useAxiosSecure();
   const email = user?.email;
   const {
     data: stats = {},
@@ -16,7 +15,9 @@ const useCoins = () => {
   } = useQuery({
     queryKey: ["workerStats", email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/worker-stats?email=${email}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/worker-stats?email=${email}`
+      );
       return res.data;
     },
     enabled: !!email,

@@ -6,14 +6,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import useCoins from "../../../Hooks/useCoins";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AddNewTaks = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { userCoins, isLoading, refetch } = useCoins();
-  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
     const imageFile = data.task_image[0];
@@ -34,7 +32,9 @@ const AddNewTaks = () => {
         const payableAmount = parseInt(data.payable_amount);
         const totalPayable = requiredWorkers * payableAmount;
 
-        const userRes = await axiosSecure.get(`/users?email=${user.email}`);
+        const userRes = await axios.get(
+          `${import.meta.env.VITE_API_URL}/users?email=${user.email}`
+        );
         const userCoins = userRes.data.coins;
 
         if (totalPayable > userCoins) {
@@ -61,13 +61,19 @@ const AddNewTaks = () => {
           createdAt: new Date(),
         };
 
-        const taskRes = await axiosSecure.post(`/tasks`, task);
+        const taskRes = await axios.post(
+          `${import.meta.env.VITE_API_URL}/tasks`,
+          task
+        );
 
         if (taskRes.data.insertedId) {
-          await axiosSecure.patch(`/users/reduce-coins`, {
-            email: user.email,
-            coins: totalPayable,
-          });
+          await axios.patch(
+            `${import.meta.env.VITE_API_URL}/users/reduce-coins`,
+            {
+              email: user.email,
+              coins: totalPayable,
+            }
+          );
 
           refetch();
 

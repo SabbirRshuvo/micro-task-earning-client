@@ -5,10 +5,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useCoins from "../../../Hooks/useCoins";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Withdrawals = () => {
-  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const { userCoins } = useCoins();
   const {
@@ -39,7 +37,21 @@ const Withdrawals = () => {
     };
 
     try {
-      await axiosSecure.post(`/withdrawals`, withdrawData);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/withdrawals`,
+        withdrawData
+      );
+
+      const remainingCoins = userCoins - withdrawal_coin;
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/update-coins/${user?.email}`,
+        {
+          coins: remainingCoins,
+        }
+      );
+
+      reset();
+      setWithdrawAmount(0);
       toast.success("Withdrawal request submitted!");
       reset();
       setWithdrawAmount(0);

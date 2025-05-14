@@ -1,16 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const AdminHome = () => {
   const [refresh, setRefresh] = useState(false);
-  const axiosSecure = useAxiosSecure();
+
   const { data: stats = {} } = useQuery({
     queryKey: ["admin-stats", refresh],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/stats");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin/stats`
+      );
       return res.data;
     },
   });
@@ -18,14 +20,16 @@ const AdminHome = () => {
   const { data: withdrawals = [] } = useQuery({
     queryKey: ["withdrawals", refresh],
     queryFn: async () => {
-      const res = await axiosSecure.get("/admin/withdrawals");
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin/withdrawals`
+      );
       return res.data;
     },
   });
 
   const handleApprove = async (request) => {
-    const res = await axiosSecure.patch(
-      `/admin/withdraw-approve/${request._id}`,
+    const res = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/admin/withdraw-approve/${request._id}`,
       {
         email: request.worker_email,
         coins: request.withdrawal_coin,

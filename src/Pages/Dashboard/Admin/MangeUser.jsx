@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+
 import Swal from "sweetalert2";
 import axios from "axios";
 
 const MangeUser = () => {
   const [refresh, setRefresh] = useState(false);
-  const axiosSecure = useAxiosSecure();
   const { data: users = [] } = useQuery({
     queryKey: ["all-users", refresh],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/users`);
       return res.data;
     },
   });
@@ -36,7 +35,7 @@ const MangeUser = () => {
   };
 
   const handleRoleChange = async (userId, newRole) => {
-    await axiosSecure.patch(`/admin/users/${userId}`, {
+    await axios.patch(`${import.meta.env.VITE_API_URL}/admin/users/${userId}`, {
       role: newRole,
     });
     setRefresh(!refresh);
