@@ -1,13 +1,13 @@
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../Hooks/useAuth";
+import useCoins from "../../Hooks/useCoins";
 
 const Dashboard = () => {
   const { user } = useAuth();
-
+  const { userCoins } = useCoins();
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
-      {/* Sidebar */}
       <aside className="bg-gray-100 border-r p-4">
         <h2 className="text-2xl font-bold mb-6">{user?.role}</h2>
         {user && user?.role === "worker" && (
@@ -154,22 +154,17 @@ const Dashboard = () => {
         <div className="divider"></div>
         <Link to="/">Home</Link>
 
-        {/* Footer */}
         <footer className="mt-10 text-sm text-gray-500">
           &copy; 2025 MicroTask
         </footer>
       </aside>
 
-      {/* Main content */}
       <div className="flex flex-col">
-        {/* Topbar */}
         <header className="flex justify-between items-center px-4 py-3 border-b shadow-sm">
           <div className="flex flex-col items-end gap-1 text-right">
-            {user?.coins ? (
-              <p className="text-sm font-semibold">{user?.coins ?? 0} coins</p>
-            ) : (
-              "Loading"
-            )}
+            <p className="text-sm font-semibold">
+              {userCoins ? userCoins : user?.coins} coins
+            </p>
             <p className="text-sm capitalize">{user?.role ?? "User"}</p>
             <p className="text-sm text-gray-600">{user?.name}</p>
           </div>
@@ -192,7 +187,6 @@ const Dashboard = () => {
           </div>
         </header>
 
-        {/* Main content based on route */}
         <main className="p-6 flex-grow overflow-auto">
           <Outlet />
         </main>

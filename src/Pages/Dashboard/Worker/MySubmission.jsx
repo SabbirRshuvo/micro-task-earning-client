@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Spinner from "../../../ShearedCompo/Spinner";
 
 const MySubmission = () => {
   const axiosSecure = useAxiosSecure();
@@ -15,9 +16,8 @@ const MySubmission = () => {
     },
   });
 
-  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  if (isLoading) return <Spinner />;
 
-  console.log(submissions);
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">My Submissions</h2>

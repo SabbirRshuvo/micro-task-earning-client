@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Spinner from "../../../ShearedCompo/Spinner";
 
 const ManageTaks = () => {
   const [refresh, setRefresh] = useState(false);
@@ -36,7 +37,7 @@ const ManageTaks = () => {
     }
   };
 
-  if (isLoading) return <div className="text-center text-red-400">Loading</div>;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="p-6">

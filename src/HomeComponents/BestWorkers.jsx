@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
 import useCoins from "../Hooks/useCoins";
+import Spinner from "../ShearedCompo/Spinner";
 
 const BestWorkers = () => {
   const { userCoins } = useCoins();
@@ -20,7 +21,7 @@ const BestWorkers = () => {
     },
   });
 
-  if (isLoading) return <p className="text-center">Loading top workers...</p>;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="max-w-6xl mx-auto p-4 mt-6">
@@ -38,7 +39,9 @@ const BestWorkers = () => {
               className="w-24 h-24 mx-auto rounded-full mb-4 object-cover"
             />
             <h3 className="text-xl font-semibold">{worker.name}</h3>
-            <p className="text-green-600 font-medium">Coins: {worker.coins}</p>
+            <p className="text-green-600 font-medium">
+              Coins: {userCoins ? userCoins : worker.coins}
+            </p>
           </div>
         ))}
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Spinner from "../../../ShearedCompo/Spinner";
 
 const WorkerHome = () => {
   const { user } = useAuth();
@@ -30,7 +31,7 @@ const WorkerHome = () => {
     });
 
   if (statsLoading || approvedLoading) {
-    return <div className="text-center text-blue-500">Loading...</div>;
+    return <Spinner />;
   }
 
   return (

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import Spinner from "../../../ShearedCompo/Spinner";
 
 const MyTasks = () => {
   const axiosSecure = useAxiosSecure();
@@ -91,7 +92,7 @@ const MyTasks = () => {
     updateTaskMutation.mutate(updatedTask);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="overflow-x-auto mt-6">

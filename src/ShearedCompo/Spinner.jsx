@@ -1,7 +1,11 @@
 import React from "react";
 
 const Spinner = () => {
-  return <div></div>;
+  return (
+    <div className="flex justify-center text-center items-center h-screen">
+      <span className="loading loading-bars loading-xl"></span>
+    </div>
+  );
 };
 
 export default Spinner;
