@@ -8,8 +8,8 @@ A dynamic MERN stack-based micro-tasking and earning platform where **Buyers** c
 
 ##  Admin Credentials
 
-- **Username/Email:** sabbirhshuvo11@gmail.com
-- **Password:** sasasa12
+- **Username/Email:** sabbirkhan@gmail.com
+- **Password:** sabbir12
 
 ##  Features
 
