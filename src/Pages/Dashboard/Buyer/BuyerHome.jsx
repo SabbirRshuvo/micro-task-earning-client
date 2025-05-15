@@ -94,7 +94,7 @@ const BuyerHome = () => {
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th>Buyer</th>
+                  <th>Worker</th>
                   <th>Task</th>
                   <th>Payable ($)</th>
                   <th>Actions</th>

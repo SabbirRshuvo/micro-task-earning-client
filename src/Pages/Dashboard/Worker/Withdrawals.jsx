@@ -41,15 +41,15 @@ const Withdrawals = () => {
         withdrawData
       );
 
-      reset();
-      setWithdrawAmount(0);
-
       Swal.fire({
         icon: "success",
         title: "Withdrawal Request Submitted!",
         text: `Your withdrawal of ${withdrawal_coin} coins has been submitted for review.`,
         confirmButtonColor: "#16a34a",
       });
+      reset();
+      setWithdrawAmount(0);
+      window.location.reload();
     } catch (err) {
       toast.error("Failed to submit withdrawal.");
     }

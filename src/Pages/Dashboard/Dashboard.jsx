@@ -2,28 +2,17 @@
 import { FaBell } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 import useAuth from "../../Hooks/useAuth";
-import useCoins from "../../Hooks/useCoins";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const userCoins = user?.coins;
+  const previousCoins = useRef(user?.coins);
 
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const [prevCoins, setPrevCoins] = useState({
-    authCoin: user?.coins,
-    dbCoins: userCoins,
-  });
   useEffect(() => {
-    if (user?.coins !== prevCoins.authCoin || userCoins !== prevCoins.dbCoins) {
-      setRefreshKey((prev) => prev + 1);
-      setPrevCoins({
-        authCoin: user?.coins,
-        dbCoins: userCoins,
-      });
+    if (user?.coins !== previousCoins.current) {
+      window.location.reload();
     }
-  }, [user?.coins, userCoins]);
+  }, [user?.coins]);
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
