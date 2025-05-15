@@ -88,7 +88,7 @@ const ExtraSection = () => {
         <p className="text-lg mb-6">
           Join thousands of freelancers already earning money from home.
         </p>
-        <button className="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-full hover:bg-gray-200 transition">
+        <button className="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-full hover:bg-gray-200 transition cursor-pointer">
           Get Started Now
         </button>
       </section>
