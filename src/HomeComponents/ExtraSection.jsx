@@ -11,7 +11,7 @@ import {
 const ExtraSection = () => {
   return (
     <>
-      <section className="bg-white py-16 px-4 text-center">
+      <section className="bg-white py-16 px-4 text-center my-10">
         <h2 className="text-3xl font-bold mb-8">How It Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <div className="flex flex-col items-center">
@@ -83,7 +83,7 @@ const ExtraSection = () => {
           </div>
         </div>
       </section>
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16 px-4 text-center">
+      <section className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-16 px-4 text-center">
         <h2 className="text-4xl font-bold mb-4">Ready to Start Earning?</h2>
         <p className="text-lg mb-6">
           Join thousands of freelancers already earning money from home.
