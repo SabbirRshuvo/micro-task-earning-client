@@ -10,7 +10,6 @@ const useAxiosSecure = () => {
   });
 
   useEffect(() => {
-    // Request interceptor
     const requestInterceptor = axiosSecure.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem("access-token");
