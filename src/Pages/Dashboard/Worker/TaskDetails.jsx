@@ -30,7 +30,7 @@ const TaskDetails = () => {
       task_title: task.task_title,
       payable_amount: task.payable_amount,
       submission_details: data.submission_details,
-      worker_name: user.displayName,
+      worker_name: user?.name,
       worker_email: user.email,
       buyer_name: task.buyer_name,
       buyer_email: task.buyer_email,

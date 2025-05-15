@@ -3,12 +3,11 @@ import { FaUserCircle } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
-import useCoins from "../Hooks/useCoins";
 
 const Navbar = () => {
   const { user, logout, loading } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { userCoins } = useCoins();
+  const userCoins = user?.coins;
 
   const handleLogout = () => {
     logout();

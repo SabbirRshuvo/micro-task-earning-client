@@ -4,11 +4,11 @@ import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
-import useCoins from "../../../Hooks/useCoins";
+import Swal from "sweetalert2";
 
 const Withdrawals = () => {
   const { user } = useAuth();
-  const { userCoins } = useCoins();
+  const userCoins = user?.coins;
   const {
     register,
     handleSubmit,
@@ -18,7 +18,6 @@ const Withdrawals = () => {
   } = useForm();
 
   const [withdrawAmount, setWithdrawAmount] = useState(0);
-
   const coinToWithdraw = watch("withdrawal_coin");
 
   const onSubmit = async (data) => {
@@ -27,7 +26,7 @@ const Withdrawals = () => {
 
     const withdrawData = {
       worker_email: user?.email,
-      worker_name: user?.displayName,
+      worker_name: user?.name,
       withdrawal_coin,
       withdrawal_amount,
       payment_system: data.payment_system,
@@ -42,19 +41,15 @@ const Withdrawals = () => {
         withdrawData
       );
 
-      const remainingCoins = userCoins - withdrawal_coin;
-      await axios.patch(
-        `${import.meta.env.VITE_API_URL}/users/update-coins/${user?.email}`,
-        {
-          coins: remainingCoins,
-        }
-      );
+      reset();
+      setWithdrawAmount(0);
 
-      reset();
-      setWithdrawAmount(0);
-      toast.success("Withdrawal request submitted!");
-      reset();
-      setWithdrawAmount(0);
+      Swal.fire({
+        icon: "success",
+        title: "Withdrawal Request Submitted!",
+        text: `Your withdrawal of ${withdrawal_coin} coins has been submitted for review.`,
+        confirmButtonColor: "#16a34a",
+      });
     } catch (err) {
       toast.error("Failed to submit withdrawal.");
     }
@@ -70,7 +65,7 @@ const Withdrawals = () => {
   };
   return (
     <div className="max-w-xl mx-auto p-4 bg-white shadow-md rounded-lg mt-6">
-      <h2 className="text-2xl font-bold text-center mb-4">💸 Withdraw Coins</h2>
+      <h2 className="text-2xl font-bold text-center mb-4"> Withdraw Coins</h2>
 
       <div className="mb-4 text-center">
         <p className="text-lg font-semibold">Available Coins: {userCoins}</p>

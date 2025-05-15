@@ -1,22 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "../../../Hooks/useAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import SubmissionModal from "./SubmissionModal";
 import axios from "axios";
-import useCoins from "../../../Hooks/useCoins";
 import { useNavigate } from "react-router";
 
 const BuyerHome = () => {
   const { user, setUser } = useAuth();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedSubmission, setSelectedSubmission] = useState(null);
-  const navigate = useNavigate();
-  const { userCoins } = useCoins();
-
-  if (userCoins < 0) {
-    navigate("/dashboard/purchase-coin");
-  }
 
   const { data: stats = {} } = useQuery({
     queryKey: ["buyerStats", user?.email],
@@ -50,7 +44,9 @@ const BuyerHome = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/users?email=${user?.email}`
       );
-      setUser((prev) => ({ ...prev, coins: res.data?.coins }));
+      const updatedCoins = res.data?.coins;
+      setUser((prev) => ({ ...prev, coins: updatedCoins }));
+
       queryClient.invalidateQueries(["taskSubmissions"]);
       queryClient.invalidateQueries(["buyerStats"]);
     },
@@ -67,6 +63,11 @@ const BuyerHome = () => {
       queryClient.invalidateQueries(["buyerStats"]);
     },
   });
+  useEffect(() => {
+    if (user?.coins <= 0) {
+      navigate("/dashboard/purchase-coin");
+    }
+  }, [user?.coins, navigate]);
 
   return (
     <div className="p-4">
@@ -102,7 +103,7 @@ const BuyerHome = () => {
               <tbody>
                 {reviews.map((submission) => (
                   <tr key={submission._id}>
-                    <td>{submission.buyer_name}</td>
+                    <td>{submission.worker_name}</td>
                     <td>{submission.task_title}</td>
                     <td>{submission.payable_amount}</td>
                     <td>
