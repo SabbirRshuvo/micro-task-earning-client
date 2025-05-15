@@ -1,51 +1,54 @@
-import React from "react";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Pagination, Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
 
+const banners = [
+  {
+    heading: "Earn From Micro Tasks",
+    title: "Complete simple tasks and earn coins instantly.",
+    image: "https://i.ibb.co/wNk8VPT5/pic.jpg",
+  },
+  {
+    heading: "Flexible Work Hours",
+    title: "Work whenever you want, wherever you want.",
+    image: "https://i.ibb.co/V0ZBP63K/18706.jpg",
+  },
+  {
+    heading: "Secure Payments",
+    title: "Instant and secure coin transfer on task approval.",
+    image: "https://i.ibb.co/bjdzTP5h/2148773983.jpg",
+  },
+];
 const Banner = () => {
-  const banners = [
-    {
-      heading: "Unlock Your Earning Potential",
-      title: "Join as a Micro-Task Worker Today!",
-      image: "https://source.unsplash.com/1600x900/?freelance,work",
-    },
-    {
-      heading: "Find Talent Faster",
-      title: "Post Your Tasks and Get Things Done",
-      image: "https://source.unsplash.com/1600x900/?business,meeting",
-    },
-    {
-      heading: "Effortless Task Management",
-      title: "Track, Approve, and Earn With Ease",
-      image: "https://source.unsplash.com/1600x900/?technology,office",
-    },
-  ];
   return (
-    <section className="w-full">
-      <Carousel
-        showThumbs={false}
-        autoPlay
-        infiniteLoop
-        showStatus={false}
-        interval={5000}
+    <div className="w-full max-w-[1440px] mx-auto mt-2">
+      <Swiper
+        pagination={{ dynamicBullets: true }}
+        autoplay={{ delay: 3000 }}
+        loop={true}
+        modules={[Pagination, Autoplay]}
+        className="rounded-lg overflow-hidden shadow-md"
       >
         {banners.map((banner, index) => (
-          <div key={index} className="relative">
-            <img
-              src={banner.image}
-              alt={`Slide ${index + 1}`}
-              className="object-cover h-[70vh] w-full"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center px-4">
-              <h2 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                {banner.heading}
-              </h2>
-              <p className="text-white text-lg md:text-2xl">{banner.title}</p>
+          <SwiperSlide key={index}>
+            <div className="relative w-full h-[250px] md:h-[400px]">
+              <img
+                src={banner.image}
+                alt={`slide-${index}`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-white text-center px-4">
+                <h2 className="text-xl md:text-4xl font-bold mb-2">
+                  {banner.heading}
+                </h2>
+                <p className="text-sm md:text-lg">{banner.title}</p>
+              </div>
             </div>
-          </div>
+          </SwiperSlide>
         ))}
-      </Carousel>
-    </section>
+      </Swiper>
+    </div>
   );
 };
 

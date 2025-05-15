@@ -5,7 +5,7 @@ import Footer from "../ShearedCompo/Footer";
 
 const Main = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen max-w-[1900px] mx-auto">
       <Navbar />
       <div className="flex-1 ">
         <Outlet />
