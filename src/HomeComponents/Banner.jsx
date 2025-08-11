@@ -1,54 +1,73 @@
-import { Pagination, Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-
-const banners = [
-  {
-    heading: "Earn From Micro Tasks",
-    title: "Complete simple tasks and earn coins instantly.",
-    image: "https://i.ibb.co/wNk8VPT5/pic.jpg",
-  },
-  {
-    heading: "Flexible Work Hours",
-    title: "Work whenever you want, wherever you want.",
-    image: "https://i.ibb.co/V0ZBP63K/18706.jpg",
-  },
-  {
-    heading: "Secure Payments",
-    title: "Instant and secure coin transfer on task approval.",
-    image: "https://i.ibb.co/bjdzTP5h/2148773983.jpg",
-  },
-];
+import React from "react";
+import { FaCheck } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
+import bg from "../../src/assets/team-banner.jpg";
 const Banner = () => {
   return (
-    <div className="w-full max-w-[1440px] mx-auto mt-2">
-      <Swiper
-        pagination={{ dynamicBullets: true }}
-        autoplay={{ delay: 3000 }}
-        loop={true}
-        modules={[Pagination, Autoplay]}
-        className="rounded-lg overflow-hidden shadow-md"
-      >
-        {banners.map((banner, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full h-[250px] md:h-[400px]">
-              <img
-                src={banner.image}
-                alt={`slide-${index}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-white text-center px-4">
-                <h2 className="text-xl md:text-4xl font-bold mb-2">
-                  {banner.heading}
-                </h2>
-                <p className="text-sm md:text-lg">{banner.title}</p>
-              </div>
+    <>
+      <section className="bg-[#f4faf7] h-[800px] flex items-center py-12 px-6 md:px-12 lg:px-20">
+        <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12 w-full">
+          {/* Left Content */}
+          <div className="flex-1 text-center lg:text-left mt-12 lg:mt-0">
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-[#1a1a1a]">
+              Job Board <span className="font-normal">and</span>
+              <br />
+              <span className="text-[#0b7c3b] font-extrabold">
+                Freelance Marketplace
+              </span>
+              <br />
+              WordPress Theme
+            </h1>
+
+            {/* Rating */}
+            <div className="mt-5 inline-flex items-center bg-[#fbe7b3] text-[#1a1a1a] px-5 py-1.5 rounded-full text-sm font-medium max-w-max">
+              <FaStar className="text-[#fbbf24] mr-2" />
+              4.84 out of 5 stars based on 275 ratings
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+
+            {/* Description */}
+            <p className="mt-6 text-gray-700 max-w-xl leading-relaxed text-base md:text-lg">
+              Build a professional job board similar to{" "}
+              <span className="font-semibold">Indeed</span>,{" "}
+              <span className="font-semibold">Monster</span>, or{" "}
+              <span className="font-semibold">LinkedIn</span> – or a freelance
+              marketplace like <span className="font-semibold">Upwork</span> or{" "}
+              <span className="font-semibold">Fiverr</span>.
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+              <button className="bg-[#0b7c3b] hover:bg-[#096330] text-white px-8 py-3 rounded-full font-medium transition">
+                Buy Now <span className="ml-2">$79</span>
+              </button>
+              <button className="border border-[#0b7c3b] text-[#0b7c3b] px-8 py-3 rounded-full font-medium hover:bg-[#0b7c3b] hover:text-white transition">
+                Browse Demos
+              </button>
+            </div>
+
+            {/* Features */}
+            <div className="mt-6 flex flex-col sm:flex-row gap-6 text-gray-700 text-sm justify-center lg:justify-start">
+              <span className="flex items-center gap-2">
+                <FaCheck className="text-[#0b7c3b]" /> One-Time Payment
+              </span>
+              <span className="flex items-center gap-2">
+                <FaCheck className="text-[#0b7c3b]" /> Lifetime License
+              </span>
+            </div>
+          </div>
+
+          {/* Right Image */}
+          <div className="flex-1 flex justify-center lg:justify-end">
+            <img
+              src={bg}
+              alt="Illustration"
+              className="max-w-full h-auto"
+              style={{ maxHeight: "500px", width: "auto" }}
+            />
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

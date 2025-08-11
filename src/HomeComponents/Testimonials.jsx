@@ -1,67 +1,72 @@
-import React from "react";
-import "swiper/css";
-import "swiper/css/pagination";
-import { Autoplay, Pagination } from "swiper/modules";
-import { SwiperSlide, Swiper } from "swiper/react";
-
 const Testimonials = () => {
-  const testimonials = [
-    {
-      name: "Rakib Hasan",
-      quote:
-        "This platform helped me earn money by doing simple tasks from home. Loved the experience!",
-      photo: "https://randomuser.me/api/portraits/men/75.jpg",
-    },
-    {
-      name: "Sadia Akter",
-      quote:
-        "As a buyer, I found skilled workers easily. Very smooth and professional.",
-      photo: "https://randomuser.me/api/portraits/women/65.jpg",
-    },
-    {
-      name: "Tanvir Hossain",
-      quote:
-        "Excellent UI and easy to use! I’ve been using this site for weeks now.",
-      photo: "https://randomuser.me/api/portraits/men/55.jpg",
-    },
-  ];
   return (
-    <section className="py-12 px-4 bg-gray-100">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-gray-800">
-        What Our Users Say
+    <>
+      <h2 className="text-center  lg:text-4xl md:text-3xl sm:text-2xl text-xl font-semibold">
+        Testimonials
       </h2>
-      <Swiper
-        modules={[Pagination, Autoplay]}
-        spaceBetween={30}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 4000 }}
-        breakpoints={{
-          768: {
-            slidesPerView: 2,
-          },
-          1024: {
-            slidesPerView: 3,
-          },
-        }}
-      >
-        {testimonials.map((user, index) => (
-          <SwiperSlide key={index}>
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center h-full">
-              <img
-                src={user.photo}
-                alt={user.name}
-                className="w-20 h-20 rounded-full mb-4 object-cover border-4 border-blue-500"
-              />
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                {user.name}
-              </h3>
-              <p className="text-gray-600 italic">"{user.quote}"</p>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </section>
+      <hr className="w-1/2 mx-auto mt-4 text-gray-700" />
+      <div class="flex flex-wrap items-center justify-center gap-6 my-8">
+        <div class="max-w-80 bg-black text-white rounded-2xl">
+          <div class="relative -mt-px overflow-hidden rounded-2xl">
+            <img
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600"
+              alt=""
+              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
+            ></img>
+            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
+          </div>
+          <div class="px-4 pb-4">
+            <p class="font-medium border-b border-gray-600 pb-5">
+              “Radiant made undercutting all of our competitors an absolute
+              breeze.”
+            </p>
+            <p class="mt-4">— Smith</p>
+            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
+              Frontend Developer
+            </p>
+          </div>
+        </div>
+        <div class="max-w-80 bg-black text-white rounded-2xl">
+          <div class="relative -mt-px overflow-hidden rounded-2xl">
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600"
+              alt=""
+              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
+            ></img>
+            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
+          </div>
+          <div class="px-4 pb-4">
+            <p class="font-medium border-b border-gray-600 pb-5">
+              “Change is hard, change is required to discomfort ”
+            </p>
+            <p class="mt-4">— Tom Holland</p>
+            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
+              Backend Developer
+            </p>
+          </div>
+        </div>
+        <div class="max-w-80 bg-black text-white rounded-2xl">
+          <div class="relative -mt-px overflow-hidden rounded-2xl">
+            <img
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop"
+              alt=""
+              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
+            ></img>
+            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
+          </div>
+          <div class="px-4 pb-4">
+            <p class="font-medium border-b border-gray-600 pb-5">
+              “Once you decide to change something, it will be change in
+              anytime”
+            </p>
+            <p class="mt-4">— Moana</p>
+            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
+              MERN Stack Developer
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

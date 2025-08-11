@@ -29,6 +29,8 @@ import BuyerRoute from "../PrivateRoute/BuyerRoute";
 import WorkerRoute from "../PrivateRoute/WorkerRoute";
 import ErrorPage from "../ShearedCompo/ErrorPage";
 import Forbidden from "../ShearedCompo/Forbidden";
+import BestWorkers from "../HomeComponents/BestWorkers";
+import Contact from "../Pages/HomePage/Contact";
 
 const routes = createBrowserRouter([
   {
@@ -38,11 +40,7 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        ),
+        element: <Home />,
       },
       {
         path: "/register",
@@ -59,6 +57,18 @@ const routes = createBrowserRouter([
             <AllUsers />
           </AdminRoute>
         ),
+      },
+      {
+        path: "/best-workers",
+        element: (
+          <PrivateRoute>
+            <BestWorkers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/forbidden",
