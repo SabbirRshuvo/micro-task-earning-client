@@ -16,7 +16,7 @@ const Banner = () => {
                 Freelance Marketplace
               </span>
               <br />
-              WordPress Theme
+              MicroTask Theme
             </h1>
 
             {/* Rating */}
@@ -41,7 +41,7 @@ const Banner = () => {
                 Buy Now <span className="ml-2">$79</span>
               </button>
               <button className="border border-[#0b7c3b] text-[#0b7c3b] px-8 py-3 rounded-full font-medium hover:bg-[#0b7c3b] hover:text-white transition">
-                Browse Demos
+                Browse here
               </button>
             </div>
 
