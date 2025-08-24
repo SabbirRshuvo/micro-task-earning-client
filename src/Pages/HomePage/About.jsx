@@ -1,8 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { motion } from "framer-motion";
-import { FaUsers, FaGlobe, FaCheckCircle } from "react-icons/fa";
-import bg from "../../assets/contact.jpg"; // your background image
-
+import bg from "../../assets/contact.jpg";
+import puzzle from "../../assets/puzzle.png";
+import color from "../../assets/color.png";
+import star from "../../assets/star.png";
+import about from "../../assets/about.jpg";
 const About = () => {
   return (
     <section
@@ -18,11 +18,7 @@ const About = () => {
       </p>
       <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 px-4 md:px-0 py-10 text-white">
         <div class="size-[520px] rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]"></div>
-        <img
-          class="max-w-sm w-full rounded-xl h-auto"
-          src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?q=80&w=830&h=844&auto=format&fit=crop"
-          alt=""
-        />
+        <img class="max-w-sm w-full rounded-xl h-auto" src={about} alt="" />
         <div>
           <h1 class="text-3xl font-semibold">Our Latest features</h1>
           <p class="text-sm text-white mt-2">
@@ -34,10 +30,7 @@ const About = () => {
           <div class="flex flex-col gap-10 mt-6">
             <div class="flex items-center gap-4">
               <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img
-                  src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/flashEmoji.png"
-                  alt=""
-                />
+                <img src={star} alt="" />
               </div>
               <div>
                 <h3 class="text-base font-medium text-white">
@@ -51,10 +44,7 @@ const About = () => {
             </div>
             <div class="flex items-center gap-4">
               <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img
-                  src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/colorsEmoji.png"
-                  alt=""
-                />
+                <img src={color} alt="" />
               </div>
               <div>
                 <h3 class="text-base font-medium text-white">
@@ -68,10 +58,7 @@ const About = () => {
             </div>
             <div class="flex items-center gap-4">
               <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img
-                  src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/aboutSection/puzzelEmoji.png"
-                  alt=""
-                />
+                <img src={puzzle} alt="" />
               </div>
               <div>
                 <h3 class="text-base font-medium text-white">

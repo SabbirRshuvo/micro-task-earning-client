@@ -30,7 +30,6 @@ import WorkerRoute from "../PrivateRoute/WorkerRoute";
 import ErrorPage from "../ShearedCompo/ErrorPage";
 import Forbidden from "../ShearedCompo/Forbidden";
 import BestWorkers from "../HomeComponents/BestWorkers";
-import Contact from "../Pages/HomePage/Contact";
 import About from "../Pages/HomePage/About";
 
 const routes = createBrowserRouter([

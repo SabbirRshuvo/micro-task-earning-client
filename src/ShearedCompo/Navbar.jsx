@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { MdDashboard } from "react-icons/md";
 
 import { FaSignOutAlt } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
-
-import { AiOutlineMenuFold } from "react-icons/ai";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
@@ -16,13 +12,7 @@ const Navbar = () => {
   ];
 
   const { user, logout } = useContext(AuthContext);
-
-  const navigate = useNavigate();
-  const userCoins = user?.coins;
-
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -38,9 +28,6 @@ const Navbar = () => {
       console.error("logout error", error);
     }
   };
-
-  const location = useLocation();
-  const isHome = location.pathname === "/";
 
   return (
     <nav
