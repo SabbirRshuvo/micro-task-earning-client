@@ -1,77 +1,71 @@
-import bg from "../../assets/contact.jpg";
-import puzzle from "../../assets/puzzle.png";
-import color from "../../assets/color.png";
-import star from "../../assets/star.png";
-import about from "../../assets/about.jpg";
 const About = () => {
   return (
-    <section
-      style={{ backgroundImage: `url(${bg})` }}
-      class="min-h-screen bg-cover bg-center bg-no-repeat bg-black/40 bg-blend-overlay flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 py-16"
-    >
-      <h1 class="text-3xl font-semibold text-center mx-auto text-white">
-        About our apps
-      </h1>
-      <p class="text-sm text-white text-center mt-2 max-w-md mx-auto">
-        Empowering You to Earn More: Discover the Benefits of Our Micro Task
-        Platform
-      </p>
-      <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 px-4 md:px-0 py-10 text-white">
-        <div class="size-[520px] rounded-full absolute blur-[300px] -z-10 bg-[#FBFFE1]"></div>
-        <img class="max-w-sm w-full rounded-xl h-auto" src={about} alt="" />
-        <div>
-          <h1 class="text-3xl font-semibold">Our Latest features</h1>
-          <p class="text-sm text-white mt-2">
-            Experience the cutting-edge features of our micro task earning
-            platform, designed to maximize your earning potential and enhance
-            your user experience.
-          </p>
-
-          <div class="flex flex-col gap-10 mt-6">
-            <div class="flex items-center gap-4">
-              <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img src={star} alt="" />
-              </div>
-              <div>
-                <h3 class="text-base font-medium text-white">
-                  Fast and Optimized
-                </h3>
-                <p class="text-sm text-white">
-                  Lightning-fast performance with optimized code for seamless
-                  user experience.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img src={color} alt="" />
-              </div>
-              <div>
-                <h3 class="text-base font-medium text-white">
-                  Beautifully Designed
-                </h3>
-                <p class="text-sm text-white">
-                  A visually stunning interface crafted for an engaging user
-                  experience.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="size-9 p-2 bg-indigo-50 border border-indigo-200 rounded">
-                <img src={puzzle} alt="" />
-              </div>
-              <div>
-                <h3 class="text-base font-medium text-white">
-                  Easy to Customize
-                </h3>
-                <p class="text-sm text-white">
-                  Tailor the platform to your preferences with user-friendly
-                  customization options.
-                </p>
-              </div>
+    <section class="flex flex-col md:flex-row items-center justify-center gap-10 max-md:px-4 pt-24 bg-gray-400">
+      <div class="relative shadow-2xl shadow-indigo-600/40 rounded-2xl overflow-hidden shrink-0">
+        <img
+          class="max-w-md w-full object-cover rounded-2xl"
+          src="https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?q=80&w=451&h=451&auto=format&fit=crop"
+          alt=""
+        />
+        <div class="flex items-center gap-1 max-w-72 absolute bottom-8 left-8 bg-white p-4 rounded-xl">
+          <div class="flex -space-x-4 shrink-0">
+            <img
+              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200"
+              alt="image"
+              class="size-9 rounded-full border-[3px] border-white hover:-translate-y-1 transition z-1"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200"
+              alt="image"
+              class="size-9 rounded-full border-[3px] border-white hover:-translate-y-1 transition z-[2]"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop"
+              alt="image"
+              class="size-9 rounded-full border-[3px] border-white hover:-translate-y-1 transition z-[3]"
+            />
+            <div class="flex items-center justify-center text-xs  text-white size-9 rounded-full border-[3px] border-white bg-indigo-600 hover:-translate-y-1 transition z-[4]">
+              50+
             </div>
           </div>
+          <p class="text-sm font-medium text-slate-800">
+            Join our developer community
+          </p>
         </div>
+      </div>
+      <div class="text-sm text-slate-600 max-w-lg">
+        <h1 class="text-xl uppercase font-semibold text-slate-700">
+          What we do?
+        </h1>
+        <div class="w-24 h-[3px] rounded-full bg-gradient-to-r from-indigo-600 to-[#DDD9FF]"></div>
+        <p class="mt-8">
+          Micro Task Earning platform build aster by transforming your design
+          vision into fully functional, production-ready UI components.
+        </p>
+        <p class="mt-4">
+          Whether you're launching a SaaS app, landing page, or dashboard, our
+          collection of Tailwind CSS components is crafted to boost your
+          development speed and improve user experience.
+        </p>
+        <p class="mt-4">
+          From UI design systems to automation-ready layouts, PrebuiltUI
+          empowers you to build beautifully and scale effortlessly.
+        </p>
+        <button class="flex items-center gap-2 mt-8 hover:-translate-y-0.5 transition bg-gradient-to-r from-indigo-600 to-[#8A7DFF] py-3 px-8 rounded-full text-white">
+          <span>Read more</span>
+          <svg
+            width="13"
+            height="12"
+            viewBox="0 0 13 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.53 6.53a.75.75 0 0 0 0-1.06L7.757.697a.75.75 0 1 0-1.06 1.06L10.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM0 6v.75h12v-1.5H0z"
+              fill="#fff"
+            />
+          </svg>
+        </button>
       </div>
     </section>
   );
