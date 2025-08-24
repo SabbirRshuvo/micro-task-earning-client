@@ -1,72 +1,90 @@
+import { FaStar } from "react-icons/fa";
+import user1 from "../assets/user1.png";
 const Testimonials = () => {
   return (
-    <>
-      <h2 className="text-center  lg:text-4xl md:text-3xl sm:text-2xl text-xl font-semibold">
-        Testimonials
-      </h2>
-      <hr className="w-1/2 mx-auto mt-4 text-gray-700" />
-      <div class="flex flex-wrap items-center justify-center gap-6 my-8">
-        <div class="max-w-80 bg-black text-white rounded-2xl">
-          <div class="relative -mt-px overflow-hidden rounded-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600"
-              alt=""
-              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
-            ></img>
-            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
-          </div>
-          <div class="px-4 pb-4">
-            <p class="font-medium border-b border-gray-600 pb-5">
-              “Radiant made undercutting all of our competitors an absolute
-              breeze.”
-            </p>
-            <p class="mt-4">— Smith</p>
-            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
-              Frontend Developer
-            </p>
-          </div>
-        </div>
-        <div class="max-w-80 bg-black text-white rounded-2xl">
-          <div class="relative -mt-px overflow-hidden rounded-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600"
-              alt=""
-              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
-            ></img>
-            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
-          </div>
-          <div class="px-4 pb-4">
-            <p class="font-medium border-b border-gray-600 pb-5">
-              “Change is hard, change is required to discomfort ”
-            </p>
-            <p class="mt-4">— Tom Holland</p>
-            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
-              Backend Developer
-            </p>
+    <section className="py-16 px-6 md:px-12 lg:px-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+          What Our Users Say
+        </h2>
+        <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
+          Hear from our community of task earners who are achieving financial
+          freedom by completing simple micro tasks online.
+        </p>
+      </div>
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+        {/* Testimonial 1 */}
+        <div className="bg-white rounded-2xl shadow-lg p-2 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
+          <img
+            src={user1}
+            alt="profile"
+            className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
+          />
+          <h3 className="text-xl font-semibold text-gray-800">Sarah Johnson</h3>
+          <p className="text-gray-600 text-sm">
+            "I never thought I could earn extra income this easily. The platform
+            is smooth and reliable. Now I can cover my daily expenses just by
+            working a few hours."
+          </p>
+          <div className="flex text-yellow-400 justify-center">
+            {[...Array(5)].map((_, idx) => (
+              <FaStar key={idx} />
+            ))}
           </div>
         </div>
-        <div class="max-w-80 bg-black text-white rounded-2xl">
-          <div class="relative -mt-px overflow-hidden rounded-2xl">
-            <img
-              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop"
-              alt=""
-              class="h-[270px] w-full rounded-2xl hover:scale-105 transition-all duration-300 object-cover object-top"
-            ></img>
-            <div class="absolute bottom-0 z-10 h-60 w-full bg-gradient-to-t pointer-events-none from-black to-transparent"></div>
+        <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
+          <img
+            src="https://randomuser.me/api/portraits/men/33.jpg"
+            alt="profile"
+            className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
+          />
+          <h3 className="text-xl font-semibold text-gray-800">Michael Lee</h3>
+          <p className="text-gray-600 text-sm">
+            "A friend recommended this platform and it has been a blessing. I
+            can work during my commute and earn money on the go."
+          </p>
+          <div className="flex text-yellow-400 justify-center">
+            {[...Array(4)].map((_, idx) => (
+              <FaStar key={idx} />
+            ))}
           </div>
-          <div class="px-4 pb-4">
-            <p class="font-medium border-b border-gray-600 pb-5">
-              “Once you decide to change something, it will be change in
-              anytime”
-            </p>
-            <p class="mt-4">— Moana</p>
-            <p class="text-sm font-medium bg-gradient-to-r from-[#8B5CF6] via-[#E0724A] to-[#9938CA] text-transparent bg-clip-text">
-              MERN Stack Developer
-            </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
+          <img
+            src="https://randomuser.me/api/portraits/women/68.jpg"
+            alt="profile"
+            className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
+          />
+          <h3 className="text-xl font-semibold text-gray-800">Emily Carter</h3>
+          <p className="text-gray-600 text-sm">
+            "Customer support is amazing! I had an issue with withdrawal and
+            they solved it instantly. Totally trust this platform."
+          </p>
+          <div className="flex text-yellow-400 justify-center">
+            {[...Array(5)].map((_, idx) => (
+              <FaStar key={idx} />
+            ))}
+          </div>
+        </div>
+        <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
+          <img
+            src="https://randomuser.me/api/portraits/men/76.jpg"
+            alt="profile"
+            className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
+          />
+          <h3 className="text-xl font-semibold text-gray-800">David Wilson</h3>
+          <p className="text-gray-600 text-sm">
+            "I use this platform as my side hustle. The variety of tasks keeps
+            it fun and the rewards are great."
+          </p>
+          <div className="flex text-yellow-400 justify-center">
+            {[...Array(3)].map((_, idx) => (
+              <FaStar key={idx} />
+            ))}
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

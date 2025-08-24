@@ -1,73 +1,82 @@
-import React from "react";
-import { FaCheck } from "react-icons/fa";
-import { FaStar } from "react-icons/fa6";
-import bg from "../../src/assets/team-banner.jpg";
+import { FaArrowRight } from "react-icons/fa";
+
+import image1 from "../assets/bg.jpg";
+import userGroup from "../assets/users-group.png";
 const Banner = () => {
   return (
-    <>
-      <section className="bg-[#f4faf7] h-[800px] flex items-center py-12 px-6 md:px-12 lg:px-20">
-        <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12 w-full">
-          {/* Left Content */}
-          <div className="flex-1 text-center lg:text-left mt-12 lg:mt-0">
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-[#1a1a1a]">
-              Job Board <span className="font-normal">and</span>
-              <br />
-              <span className="text-[#0b7c3b] font-extrabold">
-                Freelance Marketplace
-              </span>
-              <br />
-              MicroTask Theme
-            </h1>
+    <main
+      className="min-h-screen bg-cover bg-center bg-no-repeat bg-black/40 bg-blend-overlay"
+      style={{ backgroundImage: `url(${image1})` }}
+    >
+      <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto px-6 md:px-12 lg:px-16 min-h-screen">
+        <div className="max-md:text-center">
+          <h5 className="text-4xl md:text-6xl/[76px] font-semibold max-w-xl leading-tight text-white">
+            Micro Task Earning Platform
+          </h5>
 
-            {/* Rating */}
-            <div className="mt-5 inline-flex items-center bg-[#fbe7b3] text-[#1a1a1a] px-5 py-1.5 rounded-full text-sm font-medium max-w-max">
-              <FaStar className="text-[#fbbf24] mr-2" />
-              4.84 out of 5 stars based on 275 ratings
-            </div>
-
-            {/* Description */}
-            <p className="mt-6 text-gray-700 max-w-xl leading-relaxed text-base md:text-lg">
-              Build a professional job board similar to{" "}
-              <span className="font-semibold">Indeed</span>,{" "}
-              <span className="font-semibold">Monster</span>, or{" "}
-              <span className="font-semibold">LinkedIn</span> – or a freelance
-              marketplace like <span className="font-semibold">Upwork</span> or{" "}
-              <span className="font-semibold">Fiverr</span>.
-            </p>
-
-            {/* Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              <button className="bg-[#0b7c3b] hover:bg-[#096330] text-white px-8 py-3 rounded-full font-medium transition">
-                Buy Now <span className="ml-2">$79</span>
-              </button>
-              <button className="border border-[#0b7c3b] text-[#0b7c3b] px-8 py-3 rounded-full font-medium hover:bg-[#0b7c3b] hover:text-white transition">
-                Browse here
-              </button>
-            </div>
-
-            {/* Features */}
-            <div className="mt-6 flex flex-col sm:flex-row gap-6 text-gray-700 text-sm justify-center lg:justify-start">
-              <span className="flex items-center gap-2">
-                <FaCheck className="text-[#0b7c3b]" /> One-Time Payment
-              </span>
-              <span className="flex items-center gap-2">
-                <FaCheck className="text-[#0b7c3b]" /> Lifetime License
-              </span>
-            </div>
+          <p className="text-sm md:text-base max-w-lg mt-6 max-md:px-2 text-white">
+            Join our micro task earning platform and start making money today!
+            Complete simple tasks, earn rewards, and enjoy flexible work hours.
+            Sign up now and turn your spare time into cash!
+          </p>
+          <div className="flex items-center gap-4 mt-6">
+            <button
+              className="px-8 py-3 rounded-md bg-sky-600 hover:bg-sky-700 text-white active:scale-95 transition-all "
+              type="button"
+            >
+              Get Started
+            </button>
+            <button
+              className="px-5 py-3 rounded-md bg-white text-sky-600 border border-sky-400 flex items-center gap-2 hover:bg-sky-600/5 active:scale-95 transition-all"
+              type="button"
+            >
+              <span>Our Earning</span>
+            </button>
           </div>
-
-          {/* Right Image */}
-          <div className="flex-1 flex justify-center lg:justify-end">
-            <img
-              src={bg}
-              alt="Illustration"
-              className="max-w-full h-auto"
-              style={{ maxHeight: "500px", width: "auto" }}
-            />
+          <div className="flex items-center mt-9">
+            <div className="flex -space-x-3.5 pr-3">
+              <img
+                src={image1}
+                alt="image"
+                className="size-10 border-2 border-white rounded-full hover:-translate-y-px transition z-1"
+              />
+              <img
+                src={image1}
+                alt="image"
+                className="size-10 border-2 border-white rounded-full hover:-translate-y-px transition z-[2]"
+              />
+              <img
+                src={image1}
+                alt="image"
+                className="size-10 border-2 border-white rounded-full hover:-translate-y-px transition z-[3]"
+              />
+              <img
+                src={image1}
+                alt="image"
+                className="size-10 border-2 border-white rounded-full hover:-translate-y-px transition z-[4]"
+              />
+              <img
+                src={image1}
+                alt="image"
+                className="size-10 border-2 border-white rounded-full hover:-translate-y-px transition z-[4]"
+              />
+            </div>
+            <div>
+              <div className="flex items-center gap-px">
+                <p className="text-sm font-medium text-white">
+                  Join 10,000+ users
+                </p>
+                <FaArrowRight className="text-slate-700" />
+              </div>
+              <p className="text-sm text-white">Used by 1,000+ people</p>
+            </div>
           </div>
         </div>
-      </section>
-    </>
+        <div className="w-full md:max-w-xs lg:max-w-lg">
+          <img className="w-full h-auto" src={userGroup} alt="" />
+        </div>
+      </div>
+    </main>
   );
 };
 
