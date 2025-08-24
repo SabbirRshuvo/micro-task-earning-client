@@ -1,5 +1,7 @@
 import { FaStar } from "react-icons/fa";
 import user1 from "../assets/user1.png";
+import user2 from "../assets/user2.jpg";
+import user3 from "../assets/user3.jpg";
 const Testimonials = () => {
   return (
     <section className="py-16 px-6 md:px-12 lg:px-16 bg-gray-50">
@@ -34,7 +36,7 @@ const Testimonials = () => {
         </div>
         <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
           <img
-            src="https://randomuser.me/api/portraits/men/33.jpg"
+            src={user2}
             alt="profile"
             className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
           />
@@ -51,7 +53,7 @@ const Testimonials = () => {
         </div>
         <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center space-y-4 hover:shadow-xl transition">
           <img
-            src="https://randomuser.me/api/portraits/women/68.jpg"
+            src={user3}
             alt="profile"
             className="w-20 h-20 rounded-full object-cover border-4 border-indigo-100"
           />
